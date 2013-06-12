@@ -1,0 +1,51 @@
+\ProvidesPackage{myextragreek}
+
+% These are needed because computern modern cannot handle this
+\setmainfont[Mapping=tex-text]{Tahoma}
+\setmainfont[Mapping=tex-text,AutoFakeSlant=0.4]{Tahoma}
+\newfontfamily\em{Verdana Italic} % define alternative italic font, when fake slant is not used
+%\newfontfamily\sc{Verdana SmallCaps}
+
+\usepackage{xgreek}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%\newtheorem{thm}{\noindent Θεώρημα}[section]
+%\newtheorem{cor}{\noindent Πόρισμα}[section]
+%\newtheorem{lem}{\noindent Λήμμα}[section]
+%\newtheorem{prop}{\noindent Πρόταση}[section]
+%\newtheorem{defn}{\noindent Ορισμός}[section]
+%\newtheorem{exer}{\noindent Ασκήσεις}[section]
+%\newtheorem{exam}{\noindent Παράδειγμα}[section]
+%\newtheorem{exams}{\noindent Παραδείγματα}[section]
+%\newtheorem{notation}{\noindent Σημείωση}[section]
+%\newtheorem{examremark}{\noindent Παραδείγματα και Παρατηρήσεις}[section]
+%\newtheorem{examprop}{\noindent Παραδείγματα και Ιδιότητες}[section]
+%\newtheorem{para}{\noindent Παρατήρηση}[section]
+% \newtheorem{paras}{\noindent Παρατηρήσεις}[section]
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\renewcommand{\equationautorefname}{Εξ. }%Equation
+\renewcommand{\footnoteautorefname}{υποσημείωση}%footnote
+\renewcommand{\itemautorefname}{στοιχείο}%item
+\renewcommand{\figureautorefname}{Σχ.}%Figure
+\renewcommand{\tableautorefname}{Πίν.}%Table
+\renewcommand{\partautorefname}{Μέρος}%Part
+\renewcommand{\appendixautorefname}{Παράρτημα}%Appendix
+\renewcommand{\chapterautorefname}{Κεφάλαιο}%chapter
+\renewcommand{\sectionautorefname}{ενότητα}%section
+\renewcommand{\subsectionautorefname}{υποενότητα}%subsection
+\renewcommand{\subsubsectionautorefname}{υπουποενότητα}%subsubsection
+\renewcommand{\paragraphautorefname}{παράγραφος}%paragraph
+\renewcommand{\subparagraphautorefname}{υποπαράγραφος}%subparagraph
+\renewcommand{\FancyVerbLineautorefname}{γραμμή}%line
+\renewcommand{\theoremautorefname}{Θεώρημα}%Theorem
+\renewcommand{\pageautorefname}{σελίδα}%page
+
+\crefname{definition}{Ορισμός}{Ορισμοί}%
+\crefname{proposition}{Πρόταση}{Προτάσεις}%
+\crefname{theorem}{Θεώρημα}{Θεωρήματα}%
+\crefname{lemma}{Λήμμα}{Λήμματα}%
+\crefname{remark}{Σχόλιο}{Σχόλια}%
+\crefname{table}{Πίνακας}{Πίνακες}%
+
+\usepackage[yyyymmdd]{datetime}%

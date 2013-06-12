@@ -1,0 +1,430 @@
+\ProvidesPackage{mycommands}%
+
+%todo: implement for pdflatex as well
+
+\usepackage{xifthen}
+\usepackage{forloop}
+
+%=================
+% Figures
+%=================
+\def \figwidth{0.7\textwidth}% 0.7 x 16.5cm = 115.5mm
+\def \annotfigwidth{100mm}% annotated (raster) figure width
+\def \annotwidth{165mm}% annotations within this width (set equal to textwidth 165mm)
+\def \matlabfigwidth{0.8\textwidth}%
+
+\def\figureautorefname{Fig.}% in front of figure's \autoref
+%\newcommand{\subfigureautorefname}{Fig.}% when not defined by hyperref, newcommand is used instead of \def
+\newcommand{\algorithmautorefname}{Algorithm}%
+
+%-------------------------------------------
+% SINGLE FIGURE
+%-------------------------------------------
+% \myfig{file}{caption}{width or left empty}{label}
+%
+% figure with [width]{file}, caption, fig:label
+\newcommand{\myfig}[4]{%
+	\begin{figure}%
+		\centering%
+		\ifthenelse{\isempty{#3}}{%
+			\includegraphics{#1}%
+		}{%
+			\includegraphics[width=#3]{#1}%
+		}%
+		\caption{#2}%
+		\label{fig:#4}%
+	\end{figure}%
+}%
+%-------------------------------------------
+
+
+%-------------------------------------------
+% MULTIPLE FIGURES
+%-------------------------------------------
+% \insertgraphicsfiles{i_min}{i_max}{width}{filename}{extension}{caption}
+%
+% width = desired graphics width, the same for all
+%         (e.g. 0.8\textwidth)
+% filename = file name without extension
+% extension = file name extension
+%             (e.g. pdf)
+%
+% for i=(i_min) :(i_max -1)
+%    figure with ''filename''i''extension''
+\newcounter{ct}%
+\newcommand{\insertgraphicsfiles}[6]{%
+	\forloop{ct}{#1}{\value{ct} < #2}{%
+		\begin{figure}%
+			\centering%
+			\ifthenelse{\isempty{#3}}{%
+				\includegraphics{#4\arabic{ct}#5}%
+			}{%
+				\includegraphics[width=#3]{#4\arabic{ct}#5}%
+			}%
+			\caption{#6}%
+			\label{fig:#4\arabic{ct}}%
+		\end{figure}%
+	}%
+}%
+%todo: make it work with an abstract list of indices
+%-------------------------------------------
+
+
+%-------------------------------------------
+% MULTIPLE IMAGES IN SINGLE FIGURE
+%-------------------------------------------
+% \multincludegraphics{i_min}{i_max}{graphicsperline}{dimension=size}{filename}{extension}{caption}
+%
+% filename = file name without extension
+% extension = file name extension
+%             (e.g. pdf)
+%
+% for i=(i_min) :(i_max -1)
+%    figure with ''filename''i''extension''
+\newcounter{myctr}%
+\newcommand{\multincludegraphics}[7]{%
+	\setcounter{myctr}{0}%
+	\forloop{ct}{#1}{\value{ct} < #2}{%
+		\stepcounter{myctr}%
+		\subfloat[#7 \arabic{ct}]{%
+			\ifthenelse{\isempty{#4}}{%
+				\includegraphics{#5\arabic{ct}#6}%
+			}{%
+				\includegraphics[#4]{#5\arabic{ct}#6}%
+			}%
+			\label{subfig:#5\arabic{ct}}%
+		}%
+		\ifthenelse{\cnttest{\value{myctr}}={#3}}{%
+			\\%
+			\setcounter{myctr}{0}%
+		}{%
+			%
+		}%
+	}%
+}%
+%todo: make it work with an abstract list of indices
+%-------------------------------------------
+
+
+%-------------------------------------------
+% SINGLE SVG to PDF + LaTeX
+%-------------------------------------------
+% \includesvg[width]{relative_path}
+%
+% width = 0.9\textwidth (for example)
+% relative_path = relative path to SVG file, without its extension
+%
+% export for LaTeX .svg to .pdf and include .pdf_tex which inputs the produced .pdf
+\newcommand{\includesvg}[2][\undefined]{%
+	\immediate\write18{inkscape2tex.py #2 -latex-pdf}%
+	%whateverpath\john\Programming\TeX\common\ should be added to the Windows PATH variable
+	%\immediate\write18{../../common/inkscape2tex.py #1} % Linux equivallent with relative path and slashes (not error causing backshlashes)
+	%\immediate\write18{inkscape -z -D --file=#1.svg --export-pdf=#1.pdf --export-latex} % to update without checking the last modification date
+	%\executeiffilenewer{#1.svg}{#1.pdf}{inkscape -z -D --file=#1.svg --export-pdf=#1.pdf --export-latex} % if \pdffilemoddate command is available, as in pdf
+	\ifx#1\undefined%
+		\global\let\svgwidth\undefined%
+	\else%
+		\def\svgwidth{#1}%
+	\fi%
+	\IfFileExists{#2.pdf_tex}{%
+		\input{#2.pdf_tex}%
+	}{%
+		{\color{red} FILE #2.pdf_tex NOT FOUND.}%
+	}%
+}%
+%-------------------------------------------
+
+
+%-------------------------------------------
+% SINGLE SVG FIGURE
+%-------------------------------------------
+% \myfigsvg{path}{caption}{width}{label}
+%
+% path = relative path w/o extension to .svg file w/o .pdf_tex extension
+% width = width (e.g. 0.9\textwidth) | empty argument
+%
+% figure with [width]{svgfile}, caption, fig:label
+\newcommand{\myfigsvg}[4]{%
+	\begin{figure}%
+		\centering%
+		\ifthenelse{\isempty{#3}}{%
+			\includesvg{#1}%
+		}{%
+			\includesvg[#3]{#1}%
+		}%
+		\caption{#2}%
+		\label{fig:#4}%
+	\end{figure}%
+}%
+%-------------------------------------------
+
+
+%-------------------------------------------
+% SINGLE SVG to PDF (no LaTeX)
+%-------------------------------------------
+% \includesvgpdf[width=0.9\textwidth]{filename}
+%
+% filename = SVG file name without any extension
+%
+% export .svg to .pdf and include the produced .pdf
+\newcommand{\includesvgpdf}[2][\undefined]{%
+	\immediate\write18{inkscape2tex.py #2 -pdf}%
+	\ifx#1\undefined%
+		\includegraphics{#2.pdf}%
+	\else%
+		\includegraphics[#1]{#2.pdf}%
+	\fi%
+}%
+%-------------------------------------------
+
+
+%-------------------------------------------
+% BEAMER SEQUENCE OF SUPERIMPOSED FIGURES
+%-------------------------------------------
+% \slideshow{}{i_max}{width}{filename w/o extension}{extension}
+%
+% beamer
+% figure with superimposed
+% for i=1 :(i_max -1)
+%    ''filename''i''extension''
+\newcommand{\slideshow}[5]{%
+	\begin{figure}%
+		\centering%
+		\setcounter{ct}{1}%
+		\includegraphics<\arabic{ct}->[width=#3]{#4\arabic{ct}#5}%
+		\forloop{ct}{2}{\value{ct} < #2}{%
+			\llap{\includegraphics<\arabic{ct}>[width=#3]{#4\arabic{ct}#5}}%
+		}%
+	\end{figure}%
+}%
+%todo: make it work with an abstract list of indices
+%-------------------------------------------
+
+
+%-------------------------------------------
+% BEAMER LAYERED FIGURE
+%-------------------------------------------
+% \includesvglayer[width]{1-2,3-4,5,6}{relative_path}
+%
+% width = 0.9\textwidth (for example)
+% layers2slides = arguments of \onslide<>, e.g. 1-2,3-4,5,6
+%                 these are issued by the python script
+% path = relative path to SVG file, without its extension
+%
+% export for LaTeX .svg to multiple .pdf all layer combinations specified within .svg
+% and include .pdf_tex produced by python script, which includes individual .pdf_tex files
+\newcommand{\includesvglayer}[3][\undefined]{%
+	\only<1>{%
+		\ifx#1\undefined%
+			\immediate\write18{inkscape2scenes.py --scene-order=#2 --file=#3 --overprint=True}%
+		\else%
+			\immediate\write18{inkscape2scenes.py --width=#1 --scene-order=#2 --file=#3 --overprint=True}%
+		\fi%
+	}%
+	\input{#3.pdf_tex}%
+}%
+
+\newcommand{\includesvglayerbare}[3][\undefined]{%
+		\ifx#1\undefined%
+			\immediate\write18{inkscape2scenes.py --scene-order=#2 --file=#3}%
+		\else%
+			\immediate\write18{inkscape2scenes.py --width=#1 --scene-order=#2 --file=#3}%
+		\fi%
+	\input{#3.pdf_tex}%
+}%
+%-------------------------------------------
+
+
+%-------------------------------------------
+% SINGLE DOT
+%-------------------------------------------
+% \includedot[width]{relative_path}
+%
+% width = 0.9\textwidth (for example)
+% relative_path = relative path to SVG file, without its extension
+%
+% export for LaTeX .dot to .svg then to .pdf and
+% include .pdf_tex which inputs the produced .pdf
+\newcommand{\includedot}[2][\undefined]{%
+	\immediate\write18{dot #2.dot -Tsvg -o #2.svg}%
+	\includesvg[#1]{#2}%
+}%
+%-------------------------------------------
+
+
+%-------------------------------------------
+% SINGLE SVG to EPS + LaTeX
+%-------------------------------------------
+% \includeps[width]{relative_path}
+%
+% width = 0.9\textwidth (for example)
+% relative_path = relative path to SVG file, without its extension
+%
+% export for LaTeX .svg to .pdf and include .pdf_tex which inputs the produced .pdf
+\newcommand{\includeps}[2][\undefined]{%
+	\immediate\write18{inkscape2tex.py #2 -latex-eps}%
+	\ifx#1\undefined%
+		\global\let\svgwidth\undefined%
+	\else%
+		\def\svgwidth{#1}%
+	\fi%
+	\IfFileExists{#2.eps_tex}{%
+		\input{#2.eps_tex}%
+	}{%
+		{\color{red} FILE #2.eps_tex NOT FOUND.}%
+	}%
+}%
+%-------------------------------------------
+
+
+%-------------------------------------------
+% SINGLE SVG to EPS
+%-------------------------------------------
+% \includesvgeps[width=0.9\textwidth]{filename}
+%
+% filename = SVG file name without any extension
+%
+% export .svg to .pdf and include the produced .pdf
+\newcommand{\includesvgeps}[2][\undefined]{%
+	\immediate\write18{inkscape2tex.py #2 -eps}%
+	\ifx#1\undefined%
+		\includegraphics{#2.eps}%
+	\else%
+		\includegraphics[#1]{#2.eps}%
+	\fi%
+}%
+%-------------------------------------------
+
+
+%=================
+% General Commands
+%=================
+\providecommand{\mycode}[1]{\texttt{#1}}% code file names style
+\def\myparbreak{12pt}% spacing between paragraphs when needed % \vspace{\myparbreak}
+\def\myparbrk{\vspace{12pt}}%
+
+%=================
+% Paths
+%=================
+\def\mybibpath{../../bib/}%
+\def\mymatlabpath{../../../MATLAB/}%
+\def\myavrgccpath{../../../C/avr-gcc-projects/}%
+\def\mygccpath{../../../C/gcc-projects/}%
+
+%=================
+% Mathematics
+%=================
+\newcommand{\myvec}[1]{\mathbf{#1}}%
+\newcommand{\myvecgr}[1]{\boldsymbol{#1}}%
+\newcommand{\mymatr}[1]{\mathrm{#1}}%
+
+\providecommand{\abs}[1]{\left\lvert#1\right\rvert}%
+\providecommand{\norm}[1]{\left\|#1\right\|}% \rVert was reviously used
+\newcommand{\inner}[3][\undefined]{%
+\ifx#1\undefined%
+	\left\langle#2,\;#3\right\rangle%
+\else%
+	\left\langle#2,\;#3\right\rangle_{#1}%
+\fi%
+}%
+\DeclareMathOperator*{\cart}{\times}
+
+\newcommand{\transpose}{^\mathrm{T}}%
+\newcommand{\tr}{\transpose}%shortcut for transpose command
+\newcommand{\trace}[1]{\mathrm{tr}\left(#1\right)}%shortcut
+
+\newcommand{\naturals}{\mathbb{N}}%
+\newcommand{\integers}{\mathbb{Z}}%
+\newcommand{\rationals}{\mathbb{Q}}%
+\newcommand{\irrationals}{\reals\setminus\rationals}%
+\newcommand{\complexes}{\mathbb{C}}%
+\newcommand{\reals}{\mathbb{R}}%
+\newcommand{\lspan}[1]{\mathrm{span}\left\{#1\right\}}%
+\newcommand{\mspan}[1]{\mathrm{muspan}\left\{#1\right\}}%
+\newcommand{\sgn}[1]{\mathrm{sgn}\left\{#1\right\}}%
+\newcommand{\floor}[1]{\left\lfloor#1\right\rfloor}%
+\newcommand{\ceil}[1]{\left\lceil#1\right\rceil}%
+
+\newcommand{\mat}[1]{%
+\begin{bmatrix}%
+#1%
+\end{bmatrix}%
+}
+
+\newcommand{\sumi}[2][n]{\sum_{i=1}^{#1}\left(#2\right)}%
+\newcommand{\sumj}[2][n]{\sum_{j=1}^{#1}\left(#2\right)}%
+\newcommand{\sumk}[2][n]{\sum_{k=1}^{#1}\left(#2\right)}%
+
+%----------------------------------------------
+\newcommand{\myeq}[2][\undefined]{%
+	\ifx#1\undefined%
+		\begin{equation}%
+			\begin{aligned}%
+				#2%
+			\end{aligned}%
+		\end{equation}%
+	\else%
+		\begin{equation*}%
+			\begin{aligned}%
+				#2%
+			\end{aligned}%
+		\end{equation*}%
+	\fi%
+}%
+%----------------------------------------------
+
+% theorem environments
+%\def\coloredthm{1}
+\ifx\beamerbutton\undefined%
+	\ifx\coloredthm\undefined%
+		%
+		% Just using amsmath
+		\newtheorem{definition}{Definition}%
+		\newtheorem{proposition}[definition]{Proposition}%
+		\newtheorem{lemma}[definition]{Lemma}%
+		\newtheorem{theorem}[definition]{Theorem}%
+		\newtheorem{corollary}[definition]{Corollary}%
+		\newtheorem{remark}[definition]{Remark}%
+		\newtheorem{assumption}[definition]{Assumption}%
+	\else%
+		\usepackage{thmtools}%
+		\declaretheorem[name=Definition,shaded={bgcolor=YellowGreen}]{definition}
+		\declaretheorem[name=Proposition,sibling=definition,shaded={bgcolor=Yellow}]{proposition}
+		\declaretheorem[name=Lemma,sibling=definition,shaded={bgcolor=YellowOrange!50}]{lemma}
+		\declaretheorem[name=Theorem,sibling=definition,shaded={bgcolor=Melon}]{theorem}
+		\declaretheorem[name=Corollary,sibling=definition,shaded={bgcolor=Cyan!30}]{corollary}
+		\declaretheorem[name=Remark,sibling=definition]{remark}
+		\declaretheorem[name=Assumption,sibling=definition,shaded={bgcolor=Red!40}]{assumption}
+	\fi%
+	\newcommand{\asslab}[1]{\label[assumption]{#1}}%
+	\newcommand{\deflab}[1]{\label[definition]{#1}}%
+	\newcommand{\prolab}[1]{\label[proposition]{#1}}%
+	\newcommand{\lemlab}[1]{\label[lemma]{#1}}%
+	\newcommand{\thelab}[1]{\label[theorem]{#1}}%
+	\newcommand{\corlab}[1]{\label[corollary]{#1}}%
+	\newcommand{\remlab}[1]{\label[remark]{#1}}%
+\else%
+	%
+\fi%
+
+% theorem environments with common numbering
+\usepackage{cleveref}
+
+% fix ref auto-naming
+\crefname{definition}{Definition}{Definitions}%
+\crefname{proposition}{Proposition}{Propositions}%
+\crefname{theorem}{Theorem}{Theorems}%
+\crefname{lemma}{Lemma}{Lemmas}%
+\crefname{corollary}{Corollary}{Corollaries}%
+\crefname{remark}{Remark}{Remarks}%
+\crefname{assumption}{Assumption}{Assumptions}%
+
+% theorem autoref
+%\def\definitionautorefname{Definition}%
+%\def\propositionautorefname{Proposition}%
+%\def\theoremautorefname{Theorem}%
+%\def\lemmaautorefname{Lemma}%
+%\def\remarkautorefname{Remark}%
+
+\crefname{figure}{Fig.}{Figs.}%
+\crefname{subfigure}{Fig.}{Figs.}%

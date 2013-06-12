@@ -1,0 +1,125 @@
+\ProvidesPackage{mybasepreamble}
+
+\usepackage{verbatim} % enable multi-line comments
+
+\usepackage[xetex,dvipsnames,table]{xcolor} % for color within table cells colortbl package is loaded by it, replaces color package
+
+%=================
+% Page Layout
+%=================
+% Vertical
+\setlength{\voffset}{0.00cm} % 2.54cm + 0.00cm = 2.54cm
+\setlength{\topmargin}{-1.54cm} % 2.54cm + 0.00cm - 1.54cm = 1.00cm from top of page starts the header
+\setlength{\headheight}{0.50cm} % 2.54cm + 0.00cm - 1.54cm + 0.50cm = 1.5cm
+\setlength{\headsep}{0.50cm} % 1.50cm + 0.50cm = 2.00cm from top of page starts the text body
+\setlength{\textheight}{24cm}
+% Horizontal
+\setlength{\hoffset}{0cm} % 2.54cm + 0.00cm = 2.54cm
+\setlength{\textwidth}{16.5cm}
+% Margins
+\setlength{\oddsidemargin}{-0.4mm} % 2.54cm +0.00cm - 0.04cm = 25.0cm
+\setlength{\evensidemargin}{-5.4mm} % 2.54cm - 0.54cm = 2.00cm
+
+% Paragraph
+\setlength{\parindent}{0.7cm}
+\setlength{\parskip}{0cm}
+
+\usepackage{indentfirst} % indent every 1st paragraph
+\hyphenpenalty=100
+
+%=================
+% Mathematics
+%=================
+\usepackage{amssymb,amsmath,amsthm,amsfonts}
+%\usepackage{bm} % boldface math
+\usepackage{calrsfs} % calligraphic math
+
+%=================
+% Encoding & fonts
+%=================
+\usepackage[no-math]{fontspec}
+\usepackage{xunicode,xltxtra}
+
+%=================
+% Import Graphics
+%=================
+\usepackage{graphicx} % !!! remember to define graphicspath in document's preamble !!!
+\usepackage{float} % floating figures
+\usepackage{caption}
+\usepackage{subcaption}
+
+%=================
+% PDF options
+%=================
+\usepackage[bookmarks=true]{hyperref}
+\hypersetup{
+	%bookmarksopen=true,
+	bookmarksopenlevel=1,
+	%bookmarksnumbered=true,
+	unicode=true,             % non-Latin characters in Acrobat's bookmarks
+	%
+	%pdfpagemode=UseOutlines % bookmarks already used
+	pdftoolbar=true,           % show Acrobat's toolbar?
+	pdfmenubar=true,           % show Acrobat's menu?
+	pdffitwindow=false,        % page fit to window when opened
+	pdfnewwindow=false,        % links in new window
+	%
+	pdfstartview=Fit,
+	pdfpagelayout=TwoPageRight
+}
+
+%=================
+% Fancy Headers
+%=================
+\usepackage{fancyhdr}
+\pagestyle{fancy}
+% with this we ensure that the chapter and section headings are in lowercase.
+% @@@ moved it to book preamble
+\renewcommand{\sectionmark}[1]{%
+\markright{\thesection\ #1}}
+\fancyhf{} % delete current header and footer
+\fancyhead[LE,RO]{\bfseries\thepage}
+\fancyhead[LO]{\rightmark}
+\fancyhead[RE]{\leftmark}
+\renewcommand{\headrulewidth}{0.5pt}
+\renewcommand{\footrulewidth}{0pt}
+\addtolength{\headheight}{0.5pt} % space for the rule
+\fancypagestyle{plain}{%
+	\fancyhead{} % get rid of headers on plain pages
+	\renewcommand{\headrulewidth}{0pt} % and the line}
+}
+
+%=================
+% Bibliography
+%=================
+%\usepackage[usetitle=true,super=false,biblabel=squarebrackets]{achemso} % American Chemical Society Styles, MEMO: includes natbib
+\usepackage[square, numbers, sort&compress]{natbib}
+%\usepackage{bibtopic} % CAUTION: if mciteplus is present, achemso includes it, manually disable this in (achemso.sty, lines 272-274)
+
+%=================
+% Tables
+%=================
+\usepackage{ctable} % for table footnotes, captions, includes booktabs
+
+%=================
+% Auxiliary
+%=================
+\usepackage{xifthen}
+\usepackage{forloop}
+%\usepackage{siunitx}
+%\sisetup{
+%load-configurations=abbreviations,
+%load-configurations=binary,
+%mode=math,
+%quotient-mode=fraction% numbers are divided by \frac
+%}
+
+%detect-family,
+%detect-display-math = true,
+%per-mode=symbol-or-fraction,
+%fraction-function=\dfrac
+
+%=================
+% mypackages
+%=================
+\usepackage{mycommands}

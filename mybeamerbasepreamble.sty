@@ -1,0 +1,139 @@
+\ProvidesPackage{mybeamerbasepreamble}
+
+%=================
+% Auxiliary
+%=================
+\usepackage{todonotes}
+\usepackage{ifthen}
+\usepackage{xifthen}
+\usepackage{forloop}
+
+%=================
+% Beamer specific
+%=================
+\usepackage{beamerouterthemesplit}
+
+\setbeamercovered{transparent}
+
+\mode<presentation>
+{
+	\usetheme[hideothersubsections]{PaloAlto}
+	\useinnertheme{circles}
+	\usefonttheme[onlymath]{serif}
+	\setbeamercovered{transparent}
+	\setbeamertemplate{blocks}[rounded][shadow=true]
+}
+
+\mode<beamer>
+{
+	\usecolortheme{whale}
+}
+
+\mode<handout>
+{
+	\usecolortheme{seagull}
+	
+	\usepackage{pgfpages}
+	
+	\pgfpagesuselayout{8 on 1}[a4paper,border shrink=1mm]
+	
+	\newcounter{myct}
+	\forloop{myct}{1}{\value{myct} < 9}{%
+		\pgfpageslogicalpageoptions{\arabic{myct}}{border code=\pgfsetlinewidth{3pt}\pgfstroke}%
+	}
+	
+	% bug fix
+	\renewcommand\pgfsetupphysicalpagesizes{%
+		\pdfpagewidth\pgfphysicalwidth\pdfpageheight\pgfphysicalheight%
+	}
+}
+
+\usepackage{verbatim}
+
+%\usepackage[xetex,dvipsnames,table]{xcolor}
+% for color within table cells colortbl package is loaded by it, replaces color package
+
+%=================
+% Page Layout
+%=================
+\hyphenpenalty=100
+
+%=================
+% Encoding & fonts
+%=================
+\usepackage[no-math]{fontspec}
+\usepackage{xunicode,xltxtra}
+\defaultfontfeatures{Mapping=tex-text}
+%\setmainfont{Tahoma}
+\setsansfont{Tahoma}
+\newfontfamily\em{Verdana Italic}
+
+%=================
+% Mathematics
+%=================
+\usepackage{amssymb,amsmath,amsfonts} % amsthm auto loaded by beamer
+\usepackage{bm}
+\usepackage{calrsfs}
+
+%=================
+% Import Graphics
+%=================
+\usepackage{graphicx} % !!! remember to define graphicspath in document's preamble !!!
+
+%\usepackage[figuresright]{rotating}
+%\usepackage{wrapfig}
+%\usepackage{subfig}
+%\usepackage{float} % floating figures
+\usepackage{caption}
+\usepackage{subcaption}
+
+%=================\
+% Draw Graphics
+%=================
+\usepackage{siunitx}
+\sisetup{
+load-configurations=abbreviations,
+load-configurations=binary,
+%detect-family,
+%detect-display-math = true,
+mode=math
+}
+
+%=================
+% PDF options
+%=================
+\hypersetup{
+	%bookmarksopen=true,
+	bookmarksopenlevel=1,
+	%bookmarksnumbered=true,
+	unicode=true,             % non-Latin characters in Acrobat's bookmarks
+	%
+	%pdfpagemode=UseOutlines % bookmarks already used
+	pdftoolbar=true,           % show Acrobat's toolbar?
+	pdfmenubar=true,           % show Acrobat's menu?
+	pdffitwindow=false,        % page fit to window when opened
+	pdfnewwindow=false,        % links in new window
+	%
+	pdfstartview=FitV,
+	pdfpagelayout=SinglePage
+}
+
+%=================
+% Listings
+%=================
+\usepackage{textcomp} % symbols
+%\usepackage{listings} % issues with beamer
+
+%=================
+% Tables
+%=================
+%\usepackage{multirow}
+%\usepackage{tabularx}
+%\usepackage{tabulary} % less apealling alternative is tabularx, example: \begin{tabulary}{0.75\textwidth}{|L|L|}
+\usepackage{ctable} % for table footnotes, captions, includes booktabs
+%\usepackage{booktabs} % included with ctable
+
+%=================
+% mypackages
+%=================
+\usepackage{mycommands}
