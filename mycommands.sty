@@ -1,9 +1,13 @@
 \ProvidesPackage{mycommands}%
+% Misc useful commands, a lot for svg includegraphics from inkscape and dot
+%
+% 2009-2013 (c) Ioannis Filippidis, jfilippidis@gmail.com
 
 %todo: implement for pdflatex as well
 
 \usepackage{xifthen}
 \usepackage{forloop}
+\usepackage{xkeyval}
 
 %=================
 % Figures
@@ -81,22 +85,23 @@
 %
 % for i=(i_min) :(i_max -1)
 %    figure with ''filename''i''extension''
-\newcounter{myctr}%
+\newcounter{linectr}%
 \newcommand{\multincludegraphics}[7]{%
-	\setcounter{myctr}{0}%
+	\setcounter{linectr}{0}%
 	\forloop{ct}{#1}{\value{ct} < #2}{%
-		\stepcounter{myctr}%
-		\subfloat[#7 \arabic{ct}]{%
+		\stepcounter{linectr}%
+		\begin{subfigure}
 			\ifthenelse{\isempty{#4}}{%
 				\includegraphics{#5\arabic{ct}#6}%
 			}{%
 				\includegraphics[#4]{#5\arabic{ct}#6}%
 			}%
+			\caption{#7 \arabic{ct}.}
 			\label{subfig:#5\arabic{ct}}%
-		}%
-		\ifthenelse{\cnttest{\value{myctr}}={#3}}{%
+		\end{subfigure}
+		\ifthenelse{\cnttest{\value{linectr}}={#3}}{%
 			\\%
-			\setcounter{myctr}{0}%
+			\setcounter{linectr}{0}%
 		}{%
 			%
 		}%
@@ -116,7 +121,7 @@
 %
 % export for LaTeX .svg to .pdf and include .pdf_tex which inputs the produced .pdf
 \newcommand{\includesvg}[2][\undefined]{%
-	\immediate\write18{inkscape2tex.py #2 -latex-pdf}%
+	\immediate\write18{inkscape2tex.py -i #2 -m latex-pdf}%
 	%whateverpath\john\Programming\TeX\common\ should be added to the Windows PATH variable
 	%\immediate\write18{../../common/inkscape2tex.py #1} % Linux equivallent with relative path and slashes (not error causing backshlashes)
 	%\immediate\write18{inkscape -z -D --file=#1.svg --export-pdf=#1.pdf --export-latex} % to update without checking the last modification date
@@ -134,6 +139,58 @@
 }%
 %-------------------------------------------
 
+%-------------------------------------------
+% MULTIPLE SVGs (inside common figure env)
+%-------------------------------------------
+% \includesvgs[min=1,max=3,perline=1,width=\textwidth]{filename}
+%
+% width = e.g. \textwidth
+% filename = svg path without extension
+%
+% for i=(i_min) :(i_max -1)
+%    figure with ''filename''i''extension''
+\makeatletter
+\define@key{svgs}{min}{%
+	\def\ctmin{#1}
+}
+\define@key{svgs}{max}{%
+	\def\ctmax{#1}
+}
+\define@key{svgs}{perline}{%
+	\def\perline{#1}
+}
+\define@key{svgs}{width}{%
+	\def\mysvgwidth{#1}
+}
+\savekeys{svgs}{min,max,perline,width}
+
+\presetkeys{svgs}{%
+	min=0,
+	max=1,
+	perline=1,
+	width=\textwidth
+}{}
+
+\newcommand*\includesvgs[2][]{%
+	\setkeys{svgs}{#1}{
+		\setcounter{linectr}{0}%
+		\forloop{ct}{\ctmin}{\value{ct} < \ctmax}{%
+			\stepcounter{linectr}%
+			\ifthenelse{\isempty{\mysvgwidth}}{%
+				\includesvg{#2\arabic{ct}}%
+			}{%
+				\includesvg[\mysvgwidth]{#2\arabic{ct}}%
+			}%
+			\ifthenelse{\cnttest{\value{linectr}}={\perline}}{%
+				\\%
+				\setcounter{linectr}{0}%
+			}{%
+				%
+			}%
+		}%
+	}
+}%
+\makeatother
 
 %-------------------------------------------
 % SINGLE SVG FIGURE
@@ -168,7 +225,7 @@
 %
 % export .svg to .pdf and include the produced .pdf
 \newcommand{\includesvgpdf}[2][\undefined]{%
-	\immediate\write18{inkscape2tex.py #2 -pdf}%
+	\immediate\write18{inkscape2tex.py -i #2 -m pdf}%
 	\ifx#1\undefined%
 		\includegraphics{#2.pdf}%
 	\else%
@@ -241,13 +298,25 @@
 % \includedot[width]{relative_path}
 %
 % width = 0.9\textwidth (for example)
-% relative_path = relative path to SVG file, without its extension
+% relative_path = relative path to DOT file, without its extension
 %
 % export for LaTeX .dot to .svg then to .pdf and
 % include .pdf_tex which inputs the produced .pdf
 \newcommand{\includedot}[2][\undefined]{%
-	\immediate\write18{dot #2.dot -Tsvg -o #2.svg}%
-	\includesvg[#1]{#2}%
+	%\immediate\write18{dot #2.dot -Tsvg -o #2.svg}%
+	%\includesvg[#1]{#2}%
+	%
+	\immediate\write18{inkscape2tex.py -i #2 -m dot-svg-latex-pdf}%
+	\ifx#1\undefined%
+		\global\let\svgwidth\undefined%
+	\else%
+		\def\svgwidth{#1}%
+	\fi%
+	\IfFileExists{#2.pdf_tex}{%
+		\input{#2.pdf_tex}%
+	}{%
+		{\color{red} FILE #2.pdf_tex NOT FOUND.}%
+	}%
 }%
 %-------------------------------------------
 
@@ -262,7 +331,7 @@
 %
 % export for LaTeX .svg to .pdf and include .pdf_tex which inputs the produced .pdf
 \newcommand{\includeps}[2][\undefined]{%
-	\immediate\write18{inkscape2tex.py #2 -latex-eps}%
+	\immediate\write18{inkscape2tex.py -i #2 -m latex-eps}%
 	\ifx#1\undefined%
 		\global\let\svgwidth\undefined%
 	\else%
@@ -286,7 +355,7 @@
 %
 % export .svg to .pdf and include the produced .pdf
 \newcommand{\includesvgeps}[2][\undefined]{%
-	\immediate\write18{inkscape2tex.py #2 -eps}%
+	\immediate\write18{inkscape2tex.py -i #2 -m eps}%
 	\ifx#1\undefined%
 		\includegraphics{#2.eps}%
 	\else%
@@ -375,6 +444,7 @@
 
 % theorem environments
 %\def\coloredthm{1}
+
 \ifx\beamerbutton\undefined%
 	\ifx\coloredthm\undefined%
 		%
@@ -396,16 +466,188 @@
 		\declaretheorem[name=Remark,sibling=definition]{remark}
 		\declaretheorem[name=Assumption,sibling=definition,shaded={bgcolor=Red!40}]{assumption}
 	\fi%
-	\newcommand{\asslab}[1]{\label[assumption]{#1}}%
-	\newcommand{\deflab}[1]{\label[definition]{#1}}%
-	\newcommand{\prolab}[1]{\label[proposition]{#1}}%
-	\newcommand{\lemlab}[1]{\label[lemma]{#1}}%
-	\newcommand{\thelab}[1]{\label[theorem]{#1}}%
-	\newcommand{\corlab}[1]{\label[corollary]{#1}}%
-	\newcommand{\remlab}[1]{\label[remark]{#1}}%
 \else%
-	%
+	\definecolor{YellowGreen}{rgb}{0.6,0.8,0.2}
+	\definecolor{Melon}{rgb}{1.0,0.74,0.7}
+	
+%	\let\OLDdefinition=\definition
+%	\def\definition{%
+%		\setbeamercolor{block title}{fg=white,bg=YellowGreen!50!black}%
+%		\setbeamercolor{block body}{fg=black,bg=YellowGreen!20}\OLDdefinition
+%	}
+%	
+%	\let\OLDlemma=\lemma
+%	\def\lemma{%
+%		\setbeamercolor{block title}{fg=white,bg=Melon!50!black}%
+%		\setbeamercolor{block body}{fg=black,bg=Melon!20}\OLDlemma
+%	}
+%	
+%	\let\OLDtheorem=\theorem
+%	\def\theorem{%
+%		\setbeamercolor{block title}{fg=white,bg=orange!50!black}%
+%		\setbeamercolor{block body}{fg=black,bg=orange!20}\OLDtheorem
+%	}
+%	
+%	\let\OLDcorollary=\corollary
+%	\def\corollary{%
+%		\setbeamercolor{block title}{fg=white,bg=cyan!50!black}%
+%		\setbeamercolor{block body}{fg=black,bg=cyan!30}\OLDcorollary
+%	}
+
+	\let\definition\relax
+	\newenvironment<>{definition}[1][\undefined]{%
+	\begin{actionenv}#2%
+	\ifx#1\undefined%
+		\def\insertblocktitle{Definition}%
+	\else%
+		\def\insertblocktitle{Definition ({\em#1})}%
+	\fi%
+	\par%
+	\mode<presentation>{%
+		\setbeamercolor{block title}{fg=white,bg=YellowGreen!50!black}%
+		\setbeamercolor{block body}{fg=black,bg=YellowGreen!20}%
+	}%
+	\usebeamertemplate{block begin}}
+	{\par\usebeamertemplate{block end}\end{actionenv}}
+	
+	
+	\newenvironment<>{assumption}[1][\undefined]{%
+	\begin{actionenv}#2%
+	\ifx#1\undefined%
+		\def\insertblocktitle{Assumption}%
+	\else%
+		\def\insertblocktitle{Assumption ({\em#1})}%
+	\fi%
+	\par%
+	\mode<presentation>{%
+		\setbeamercolor{block title}{fg=white,bg=red!50!black}%
+		\setbeamercolor{block body}{fg=black,bg=red!20}%
+	}%
+	\usebeamertemplate{block begin}}
+	{\par\usebeamertemplate{block end}\end{actionenv}}
+	
+	\newenvironment<>{proposition}[1][\undefined]{%
+	\begin{actionenv}#2%
+	\ifx#1\undefined%
+		\def\insertblocktitle{Proposition}%
+	\else%
+		\def\insertblocktitle{Proposition ({\em#1})}%
+	\fi%
+	\par%
+	\mode<presentation>{%
+		\setbeamercolor{block title}{fg=white,bg=yellow!50!black}%
+		\setbeamercolor{block body}{fg=black,bg=yellow!20}%
+	}%
+	\usebeamertemplate{block begin}}
+	{\par\usebeamertemplate{block end}\end{actionenv}}
+
+	\let\lemma\relax
+	\newenvironment<>{lemma}[1][\undefined]{%
+	\begin{actionenv}#2%
+	\ifx#1\undefined%
+		\def\insertblocktitle{Lemma}%
+	\else%
+		\def\insertblocktitle{Lemma ({\em#1})}%
+	\fi%
+	\par%
+	\mode<presentation>{%
+		\setbeamercolor{block title}{fg=white,bg=Melon!50!black}%
+		\setbeamercolor{block body}{fg=black,bg=Melon!20}%
+	}%
+	\usebeamertemplate{block begin}}
+	{\par\usebeamertemplate{block end}\end{actionenv}}
+	
+	\let\theorem\relax
+	\newenvironment<>{theorem}[1][\undefined]{%
+	\begin{actionenv}#2%
+	\ifx#1\undefined%
+		\def\insertblocktitle{Theorem}%
+	\else%
+		\def\insertblocktitle{Theorem ({\em#1})}%
+	\fi%
+	\par%
+	\mode<presentation>{%
+		\setbeamercolor{block title}{fg=white,bg=orange!50!black}%
+		\setbeamercolor{block body}{fg=black,bg=orange!20}%
+	}%
+	\usebeamertemplate{block begin}}
+	{\par\usebeamertemplate{block end}\end{actionenv}}
+	
+	\let\corollary\relax
+	\newenvironment<>{corollary}[1][\undefined]{%
+	\begin{actionenv}#2%
+	\ifx#1\undefined%
+		\def\insertblocktitle{Corollary}%
+	\else%
+		\def\insertblocktitle{Corollary ({\em#1})}%
+	\fi%
+	\par%
+	\mode<presentation>{%
+		\setbeamercolor{block title}{fg=white,bg=cyan!50!black}%
+		\setbeamercolor{block body}{fg=black,bg=cyan!30}%
+	}%
+	\usebeamertemplate{block begin}}
+	{\par\usebeamertemplate{block end}\end{actionenv}}
+	
+	\newenvironment<>{remark}[1][\undefined]{%
+	\begin{actionenv}#2%
+	\ifx#1\undefined%
+		\def\insertblocktitle{Remark}%
+	\else%
+		\def\insertblocktitle{Remark ({\em#1})}%
+	\fi%
+	\par%
+	\mode<presentation>{%
+		\setbeamercolor{block title}{fg=white,bg=red!50!black}%
+		\setbeamercolor{block body}{fg=black,bg=red!20}%
+	}%
+	\usebeamertemplate{block begin}}
+	{\par\usebeamertemplate{block end}\end{actionenv}}
 \fi%
+
+\newcommand{\asslab}[1]{\label[assumption]{#1}}%
+\newcommand{\deflab}[1]{\label[definition]{#1}}%
+\newcommand{\prolab}[1]{\label[proposition]{#1}}%
+\newcommand{\lemlab}[1]{\label[lemma]{#1}}%
+\newcommand{\thelab}[1]{\label[theorem]{#1}}%
+\newcommand{\corlab}[1]{\label[corollary]{#1}}%
+\newcommand{\remlab}[1]{\label[remark]{#1}}%
+
+%=========================================
+% Example Usage of theoremstyles in beamer
+%=========================================
+%\begin{frame}{Testing theoremstyles 1}{custom}
+%	\begin{definition}[one]
+%		hello
+%	\end{definition}
+%	
+%	\begin{assumption}[two]
+%		hello
+%	\end{assumption}
+%	
+%	\begin{proposition}[three]
+%		hello
+%	\end{proposition}
+%\end{frame}
+%
+%\begin{frame}{Testing theoremstyles 2}{custom}
+%	\begin{lemma}[four]
+%		hello
+%	\end{lemma}
+%	
+%	\begin{theorem}[five]
+%		hello
+%	\end{theorem}
+%	
+%	\begin{corollary}[six]
+%		hello
+%	\end{corollary}
+%
+%	\begin{remark}[seven]
+%		hello
+%	\end{remark}
+%\end{frame}
+%=========================================
 
 % theorem environments with common numbering
 \usepackage{cleveref}
@@ -428,3 +670,133 @@
 
 \crefname{figure}{Fig.}{Figs.}%
 \crefname{subfigure}{Fig.}{Figs.}%
+
+%===================================================
+\makeatletter
+\@ifpackageloaded{listings}{%
+	% source code formatting (CAUTION: listings != listing package)
+	
+	% Default fixed font does not support bold face
+	\DeclareFixedFont{\ttb}{T1}{txtt}{bx}{n}{12} % for bold
+	\DeclareFixedFont{\ttm}{T1}{txtt}{m}{n}{12}  % for normal
+	
+	% Custom colors
+	\usepackage{color}
+	\definecolor{deepblue}{rgb}{0,0,0.5}
+	\definecolor{deepred}{rgb}{0.6,0,0}
+	\definecolor{deepgreen}{rgb}{0,0.5,0}
+	
+	\newfontfamily{\couriernew}{Courier New}
+	
+	\newcommand\cstyle{\lstset{%
+		language=C,% choose the language of the code
+		basicstyle=\footnotesize,% the size of the fonts that are used for the code
+		numbers=left,% where to put the line-numbers
+		numberstyle=\footnotesize,% the size of the fonts that are used for the line-numbers
+		stepnumber=2,% the step between two line-numbers. If it's 1 each line will be numbered
+		numbersep=5pt,% how far the line-numbers are from the code
+		backgroundcolor=\color{white},% choose the background color. You must add \usepackage{color}
+		showspaces=false,% show spaces adding particular underscores
+		showstringspaces=false,% underline spaces within strings
+		showtabs=false,% show tabs within strings adding particular underscores
+		%frame=single,% adds a frame around the code
+		tabsize=4,% sets default tabsize to 2 spaces
+		captionpos=b,% sets the caption-position to bottom
+		breaklines=true,% sets automatic line breaking
+		breakatwhitespace=false,% sets if automatic breaks should only happen at whitespace
+		title=\lstname,% show the filename of files included with \lstinputlisting; also try caption instead of title
+		escapeinside={\%*}{*)},% if you want to add a comment within your code
+		frame=shadowbox,%
+		rulesepcolor=\color{blue},%
+		keywordstyle=\color[rgb]{0,0,1},%
+		commentstyle=\color[rgb]{0.133,0.545,0.133},%
+		stringstyle=\color[rgb]{0.627,0.126,0.941}%
+	}}%
+	
+	\newcommand\pythonstyle{\lstset{%
+		language=Python,%
+		basicstyle=\footnotesize\couriernew,%
+		numbers=left,%
+		numberstyle=\footnotesize,%
+		stepnumber=1,%
+		numbersep=5pt,%
+		backgroundcolor=\color{white},%
+		showspaces=false,%
+		showstringspaces=false,%
+		showtabs=false,%
+		%frame=single,%
+		otherkeywords={self},%
+		keywordstyle=\ttb\color{deepblue},%
+		commentstyle=\color[rgb]{0.133,0.545,0.133},%
+		stringstyle=\color[rgb]{0.627,0.126,0.941},%
+		%
+		emph={MyClass,__init__},%
+		emphstyle=\ttb\color{deepred},%
+		stringstyle=\color{deepgreen},%
+		frame=tb,%
+		showstringspaces=false% 
+		%
+		tabsize=4,% sets default tabsize to 2 spaces
+		captionpos=b,% sets the caption-position to bottom
+		breaklines=true,% sets automatic line breaking
+		breakatwhitespace=false,% sets if automatic breaks should only happen at whitespace
+		%title=\lstname,% show the filename of files included with \lstinputlisting; also try caption instead of title
+		escapeinside={\%*}{*)},%
+		frame=shadowbox,%
+		rulesepcolor=\color{blue},%
+	}}%
+	
+	\newcommand\promelastyle{\lstset{%
+		language=Promela,%
+		basicstyle=\footnotesize\couriernew,%
+		numbers=left,%
+		numberstyle=\footnotesize,%
+		stepnumber=1,%
+		numbersep=5pt,%
+		backgroundcolor=\color{white},%
+		showspaces=false,%
+		showstringspaces=false,%
+		showtabs=false,%
+		%frame=single,%
+		otherkeywords={self},%
+		keywordstyle=\ttb\color{deepblue},%
+		commentstyle=\color[rgb]{0.133,0.545,0.133},%
+		stringstyle=\color[rgb]{0.627,0.126,0.941},%
+		stringstyle=\color{deepgreen},%
+		frame=tb,%
+		showstringspaces=false% 
+		%
+		tabsize=4,%
+		captionpos=b,%
+		breaklines=true,%
+		breakatwhitespace=false,%
+		%title=\lstname,%
+		escapeinside={\%*}{*)},%
+		frame=shadowbox,%
+		rulesepcolor=\color{blue},%
+	}}%
+	
+	\newcommand{\matlabstyle}{
+		%
+	}%
+	
+	% Python for external files
+	\newcommand\inputcode[2][\undefined]{%
+		\ifx#1c%
+			\cstyle%
+		\fi%
+		\ifx#1promela%
+			\promelastyle%
+		\fi%
+		\ifx#1python%
+			\pythonstyle%
+		\fi%
+		\ifx#1matlab%
+			\matlabstyle%
+		\fi%
+		\lstinputlisting{#2}%
+	}%
+}{%
+	%skip
+}%
+\makeatother

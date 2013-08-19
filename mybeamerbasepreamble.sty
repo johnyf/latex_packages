@@ -11,22 +11,21 @@
 %=================
 % Beamer specific
 %=================
-\usepackage{beamerouterthemesplit}
+%\usepackage{beamerouterthemesplit}
 
 \setbeamercovered{transparent}
 
 \mode<presentation>
 {
-	\usetheme[hideothersubsections]{PaloAlto}
-	\useinnertheme{circles}
+	\usetheme{Pasadena}
+	%\useinnertheme{circles}
 	\usefonttheme[onlymath]{serif}
-	\setbeamercovered{transparent}
 	\setbeamertemplate{blocks}[rounded][shadow=true]
 }
 
 \mode<beamer>
 {
-	\usecolortheme{whale}
+	%\usecolortheme{whale}
 }
 
 \mode<handout>
@@ -50,7 +49,6 @@
 
 \usepackage{verbatim}
 
-%\usepackage[xetex,dvipsnames,table]{xcolor}
 % for color within table cells colortbl package is loaded by it, replaces color package
 
 %=================
@@ -71,7 +69,7 @@
 %=================
 % Mathematics
 %=================
-\usepackage{amssymb,amsmath,amsfonts} % amsthm auto loaded by beamer
+\usepackage{amssymb,amsmath,amsfonts,amsthm} % amsthm auto loaded by beamer
 \usepackage{bm}
 \usepackage{calrsfs}
 
@@ -103,15 +101,15 @@ mode=math
 % PDF options
 %=================
 \hypersetup{
-	%bookmarksopen=true,
-	bookmarksopenlevel=1,
+	bookmarksopen=false,
+	%bookmarksopenlevel=1,
 	%bookmarksnumbered=true,
 	unicode=true,             % non-Latin characters in Acrobat's bookmarks
 	%
 	%pdfpagemode=UseOutlines % bookmarks already used
 	pdftoolbar=true,           % show Acrobat's toolbar?
 	pdfmenubar=true,           % show Acrobat's menu?
-	pdffitwindow=false,        % page fit to window when opened
+	pdffitwindow=true,        % page fit to window when opened
 	pdfnewwindow=false,        % links in new window
 	%
 	pdfstartview=FitV,
