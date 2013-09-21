@@ -78,37 +78,73 @@
 %-------------------------------------------
 % MULTIPLE IMAGES IN SINGLE FIGURE
 %-------------------------------------------
-% \multincludegraphics{i_min}{i_max}{graphicsperline}{dimension=size}{filename}{extension}{caption}
+%todo: make it work with arbitrary list of indices
+% \multincludegraphics[min=1,max=3,perline=1,width=0.5\textwidth,ext=.pdf,fit]{filename}
+% \includesvgs[min=1,max=3,perline=1,width=\textwidth,fit]{filename}
 %
-% filename = file name without extension
-% extension = file name extension
-%             (e.g. pdf)
+% @param min: minimal index
+% @param max: maximal index
+% @param width: includegraphics with, e.g. \textwidth
+% @param ext: file extension, including the ., e.g. .pdf
+% @param subfig: make images subfigures
+% @param filename: file path without extension
+\makeatletter
+\define@boolkey{figs}{subfig}[false]{}%
+\define@key{figs}{min}{%
+	\def\ctmin{#1}
+}
+\define@key{figs}{max}{%
+	\def\ctmax{#1}%
+}
+\define@key{figs}{perline}{%
+	\def\perline{#1}%
+}
+\define@key{figs}{width}{%
+	\def\myfigwidth{#1}%
+}
+\define@key{figs}{ext}{%
+	\def\myextension{#1}%
+}
 %
-% for i=(i_min) :(i_max -1)
-%    figure with ''filename''i''extension''
+\savekeys{figs}{fit,min,max,perline,width,ext}
+%
+\presetkeys{figs}{%
+	min=0,
+	max=1,
+	perline=1,
+	width=\textwidth,
+	ext=pdf,
+}{}
+%
 \newcounter{linectr}%
-\newcommand{\multincludegraphics}[7]{%
-	\setcounter{linectr}{0}%
-	\forloop{ct}{#1}{\value{ct} < #2}{%
-		\stepcounter{linectr}%
-		\begin{subfigure}
-			\ifthenelse{\isempty{#4}}{%
-				\includegraphics{#5\arabic{ct}#6}%
+\newcommand*\multincludegraphics[2][]{%
+	\setkeys{figs}{#1}{
+		\setcounter{linectr}{0}%
+		\forloop{ct}{\ctmin}{\not{\value{ct} > \ctmax}}{%
+			\stepcounter{linectr}%
+			\ifKV@figs@subfig
+				\begin{subfigure}
+			\fi
+			\ifthenelse{\isempty{\myfigwidth}}{%
+				\includegraphics{#2\arabic{ct}\myextension}%
 			}{%
-				\includegraphics[#4]{#5\arabic{ct}#6}%
+				\includegraphics[width=\myfigwidth]{#2\arabic{ct}.\myextension}%
 			}%
-			\caption{#7 \arabic{ct}.}
-			\label{subfig:#5\arabic{ct}}%
-		\end{subfigure}
-		\ifthenelse{\cnttest{\value{linectr}}={#3}}{%
-			\\%
-			\setcounter{linectr}{0}%
-		}{%
-			%
+			\ifKV@figs@subfig
+				\caption{\arabic{ct}.}
+				\label{subfig:#2\arabic{ct}}%
+				\end{subfigure}
+			\fi
+			\ifthenelse{\cnttest{\value{linectr}}={\perline}}{%
+				\\%
+				\setcounter{linectr}{0}%
+			}{%
+				%
+			}%
 		}%
-	}%
+	}
 }%
-%todo: make it work with an abstract list of indices
+\makeatother
 %-------------------------------------------
 
 
