@@ -76,20 +76,23 @@
 
 
 %-------------------------------------------
-% MULTIPLE IMAGES IN SINGLE FIGURE
+% MULTIPLE IMAGES
 %-------------------------------------------
+% (e.g. in single figure, you choose)
+%
 %todo: make it work with arbitrary list of indices
-% \multincludegraphics[min=1,max=3,perline=1,width=0.5\textwidth,ext=.pdf,fit]{filename}
+% \multincludegraphics[min=1,max=3,perline=1,width=0.5\textwidth,ext=pdf,subfig]{filename}
 % \includesvgs[min=1,max=3,perline=1,width=\textwidth,fit]{filename}
 %
 % @param min: minimal index
 % @param max: maximal index
+% @param perline: #figs side-by-side on each line
 % @param width: includegraphics with, e.g. \textwidth
-% @param ext: file extension, including the ., e.g. .pdf
+% @param ext: file extension including period, for example: .pdf
 % @param subfig: make images subfigures
 % @param filename: file path without extension
 \makeatletter
-\define@boolkey{figs}{subfig}[false]{}%
+\define@boolkey{figs}{subfig}[true]{}%
 \define@key{figs}{min}{%
 	\def\ctmin{#1}
 }
@@ -113,7 +116,7 @@
 	max=1,
 	perline=1,
 	width=\textwidth,
-	ext=pdf,
+	ext=.pdf,
 }{}
 %
 \newcounter{linectr}%
@@ -122,18 +125,24 @@
 		\setcounter{linectr}{0}%
 		\forloop{ct}{\ctmin}{\not{\value{ct} > \ctmax}}{%
 			\stepcounter{linectr}%
+			%filename enclosed by {} to avoid issues with periods
+			\def\imgfile{{#2\arabic{ct}\myextension}}%
 			\ifKV@figs@subfig
-				\begin{subfigure}
-			\fi
-			\ifthenelse{\isempty{\myfigwidth}}{%
-				\includegraphics{#2\arabic{ct}\myextension}%
-			}{%
-				\includegraphics[width=\myfigwidth]{#2\arabic{ct}.\myextension}%
-			}%
-			\ifKV@figs@subfig
-				\caption{\arabic{ct}.}
-				\label{subfig:#2\arabic{ct}}%
+				\ifthenelse{\isempty{\myfigwidth}}{%
+					\begin{subfigure}{\textwidth}
+				}{%
+					\begin{subfigure}{\myfigwidth}
+				}%
+					\includegraphics[width=\textwidth]{\imgfile}%
+					\caption{}%to show the (a), (b) etc
+					\label{subfig:#2\arabic{ct}}%
 				\end{subfigure}
+			\else
+				\ifthenelse{\isempty{\myfigwidth}}{%
+					\includegraphics{\imgfile}%
+				}{%
+					\includegraphics[width=\myfigwidth]{\imgfile}%
+				}%
 			\fi
 			\ifthenelse{\cnttest{\value{linectr}}={\perline}}{%
 				\\%
