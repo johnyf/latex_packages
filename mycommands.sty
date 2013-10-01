@@ -140,7 +140,7 @@
 				\\%
 				\setcounter{linectr}{0}%
 			}{%
-				%
+				\hfill
 			}%
 		}%
 	}
@@ -156,19 +156,31 @@
 % relative_path = relative path to SVG file, without its extension
 %
 % export for LaTeX .svg to .pdf and include .pdf_tex which inputs the produced .pdf
-\newcommand{\includesvg}[2][\undefined]{%
-	\immediate\write18{inkscape2tex.py -i #2 -m latex-pdf}%
-	\ifx#1\undefined%
-		\global\let\svgwidth\undefined%
-	\else%
-		\def\svgwidth{#1}%
-	\fi%
-	\IfFileExists{#2.pdf_tex}{%
-		\input{#2.pdf_tex}%
-	}{%
-		{\color{red} FILE #2.pdf_tex NOT FOUND.}%
+\makeatletter
+\define@key{svg}{width}{%
+	\def\svgwidth{#1}
+}
+\savekeys{svg}{width}
+\presetkeys{svg}{%
+	width=\textwidth
+}{}
+
+\newcommand*\includesvg[2][]{%
+	\setkeys{svg}{#1}{
+		\immediate\write18{inkscape2tex.py -i #2 -m latex-pdf}%
+		\ifthenelse{\isempty{\svgwidth}}{%
+			\global\let\svgwidth\undefined%
+		}{%
+			%
+		}%
+		\IfFileExists{#2.pdf_tex}{%
+			\input{#2.pdf_tex}%
+		}{%
+			{\color{red} FILE #2.pdf_tex NOT FOUND.}%
+		}%
 	}%
 }%
+\makeatother
 
 %-------------------------------------------
 % MULTIPLE SVGs (inside common figure env)
@@ -216,7 +228,7 @@
 				\ifthenelse{\isempty{\mysvgwidth}}{%
 					\includesvg{#2\arabic{ct}}%
 				}{%
-					\includesvg[\mysvgwidth]{#2\arabic{ct}}%
+					\includesvg[width=\mysvgwidth]{#2\arabic{ct}}%
 				}%
 			\fi
 			\ifthenelse{\cnttest{\value{linectr}}={\perline}}{%
@@ -245,7 +257,7 @@
 		\ifthenelse{\isempty{#3}}{%
 			\includesvg{#1}%
 		}{%
-			\includesvg[#3]{#1}%
+			\includesvg[width=#3]{#1}%
 		}%
 		\caption{#2}%
 		\label{fig:#4}%
