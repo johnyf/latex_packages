@@ -42,7 +42,7 @@
 %-------------------------------------------
 % MULTIPLE FIGURES
 %-------------------------------------------
-% \insertgraphicsfiles{i_min}{i_max}{width}{filename}{extension}{caption}
+% \figs{i_min}{i_max}{width}{filename}{extension}{caption}
 %
 % width = desired graphics width, the same for all
 %         (e.g. 0.8\textwidth)
@@ -53,7 +53,7 @@
 % for i=(i_min) :(i_max -1)
 %    figure with ''filename''i''extension''
 \newcounter{ct}%
-\newcommand{\insertgraphicsfiles}[6]{%
+\newcommand{\figs}[6]{%
 	\forloop{ct}{#1}{\value{ct} < #2}{%
 		\begin{figure}%
 			\centering%
@@ -74,7 +74,6 @@
 % (e.g. in single figure, you choose)
 %
 % \multincludegraphics[min=1,max=3,perline=1,width=0.5\textwidth,ext=pdf,subfig]{filename}
-% \includesvgs[min=1,max=3,perline=1,width=\textwidth,fit]{filename}
 %
 % @param min: minimal index
 % @param max: maximal index
@@ -109,6 +108,7 @@
 	perline=1,
 	width=\textwidth,
 	ext=.pdf,
+	subfig=true
 }{}
 %
 \newcounter{linectr}%
@@ -150,37 +150,66 @@
 %-------------------------------------------
 % SINGLE SVG to PDF + LaTeX
 %-------------------------------------------
-% \includesvg[width]{relative_path}
+% \includesvg[width=0.5\textwidth]{relative_path}
+% \includesvg[width=0.5\textwidth,tex]{relative_path}
+% \includesvg[width=0.5\textwidth,tex=true]{relative_path}
+%
+%	or
+%
+% \includesvg[width=0.5\textwidth,tex=false]{filename}
 %
 % width = 0.9\textwidth (for example)
 % relative_path = relative path to SVG file, without its extension
 %
 % export for LaTeX .svg to .pdf and include .pdf_tex which inputs the produced .pdf
 \makeatletter
+\define@boolkey{svg}{tex}[true]{}%
 \define@key{svg}{width}{%
 	\def\svgwidth{#1}
 }
 \savekeys{svg}{width}
 \presetkeys{svg}{%
-	width=\textwidth
+	width=\textwidth,
+	tex=true
 }{}
 
 \newcommand*\includesvg[2][]{%
 	\setkeys{svg}{#1}{
-		\immediate\write18{inkscape2tex.py -i #2 -m latex-pdf}%
-		\ifthenelse{\isempty{\svgwidth}}{%
-			\global\let\svgwidth\undefined%
-		}{%
-			%
-		}%
-		\IfFileExists{#2.pdf_tex}{%
-			\input{#2.pdf_tex}%
-		}{%
-			{\color{red} FILE #2.pdf_tex NOT FOUND.}%
-		}%
+		\ifKV@svg@tex%
+			\immediate\write18{inkscape2tex.py -i #2 -m latex-pdf}%
+			\ifthenelse{\isempty{\svgwidth}}{%
+				\global\let\svgwidth\undefined%
+			}{%
+				%
+			}%
+			\IfFileExists{#2.pdf_tex}{%
+				\input{#2.pdf_tex}%
+			}{%
+				{\color{red} FILE #2.pdf_tex NOT FOUND.}%
+			}%
+		\else%
+			\immediate\write18{inkscape2tex.py -i #2 -m pdf}%
+			\ifx#1\undefined%
+				\includegraphics{#2.pdf}%
+			\else%
+				\includegraphics[width=\svgwidth]{#2.pdf}%
+			\fi%
+		\fi%
 	}%
 }%
 \makeatother
+
+%-------------------------------------------
+% Wrapper for SVG w/o latex
+%-------------------------------------------
+% \includesvgpdf[width=0.9\textwidth]{filename}
+%
+% filename = SVG file name without any extension
+%
+% export .svg to .pdf and include the produced .pdf
+\newcommand{\includesvgpdf}[2][\undefined]{%
+	\includesvg[#1,tex=false]{#2}%
+}%
 
 %-------------------------------------------
 % MULTIPLE SVGs (inside common figure env)
@@ -262,23 +291,6 @@
 		\caption{#2}%
 		\label{fig:#4}%
 	\end{figure}%
-}%
-
-%-------------------------------------------
-% SINGLE SVG to PDF (no LaTeX)
-%-------------------------------------------
-% \includesvgpdf[width=0.9\textwidth]{filename}
-%
-% filename = SVG file name without any extension
-%
-% export .svg to .pdf and include the produced .pdf
-\newcommand{\includesvgpdf}[2][\undefined]{%
-	\immediate\write18{inkscape2tex.py -i #2 -m pdf}%
-	\ifx#1\undefined%
-		\includegraphics{#2.pdf}%
-	\else%
-		\includegraphics[#1]{#2.pdf}%
-	\fi%
 }%
 
 %-------------------------------------------
