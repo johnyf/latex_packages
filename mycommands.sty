@@ -443,6 +443,13 @@
 	\left\langle#2,\;#3\right\rangle_{#1}%
 \fi%
 }%
+\newcommand{\dinner}[3][\undefined]{%
+\ifx#1\undefined%
+	\left\langle\left\langle#2,\;#3\right\rangle\right\rangle%
+\else%
+	\left\langle#2,\;#3\right\rangle_{#1}%
+\fi%
+}%
 \DeclareMathOperator*{\cart}{\times}
 
 \newcommand{\transpose}{^\mathrm{T}}%
