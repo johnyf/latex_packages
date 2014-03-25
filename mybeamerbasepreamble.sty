@@ -3,7 +3,7 @@
 %=================
 % Auxiliary
 %=================
-\usepackage{todonotes}
+%\usepackage{todonotes}
 \usepackage{ifthen}
 \usepackage{xifthen}
 \usepackage{forloop}
@@ -28,26 +28,26 @@
 	%\usecolortheme{whale}
 }
 
-\mode<handout>
-{
-	\usecolortheme{seagull}
-	
-	\usepackage{pgfpages}
-	
-	\pgfpagesuselayout{8 on 1}[a4paper,border shrink=1mm]
-	
-	\newcounter{myct}
-	\forloop{myct}{1}{\value{myct} < 9}{%
-		\pgfpageslogicalpageoptions{\arabic{myct}}{border code=\pgfsetlinewidth{3pt}\pgfstroke}%
-	}
-	
-	% bug fix
-	\renewcommand\pgfsetupphysicalpagesizes{%
-		\pdfpagewidth\pgfphysicalwidth\pdfpageheight\pgfphysicalheight%
-	}
-}
+%\mode<handout>
+%{
+%	\usecolortheme{seagull}
+%	
+%	\usepackage{pgfpages}
+%	
+%	\pgfpagesuselayout{8 on 1}[a4paper,border shrink=1mm]
+%	
+%	\newcounter{myct}
+%	\forloop{myct}{1}{\value{myct} < 9}{%
+%		\pgfpageslogicalpageoptions{\arabic{myct}}{border code=\pgfsetlinewidth{3pt}\pgfstroke}%
+%	}
+%	
+%	% bug fix
+%	\renewcommand\pgfsetupphysicalpagesizes{%
+%		\pdfpagewidth\pgfphysicalwidth\pdfpageheight\pgfphysicalheight%
+%	}
+%}
 
-\usepackage{verbatim}
+%\usepackage{verbatim}
 
 % for color within table cells colortbl package is loaded by it, replaces color package
 
@@ -69,7 +69,7 @@
 %=================
 % Mathematics
 %=================
-\usepackage{amssymb,amsmath,amsfonts,amsthm} % amsthm auto loaded by beamer
+\usepackage{amssymb,amsmath,amsfonts} % amsthm auto loaded by beamer
 \usepackage{bm}
 \usepackage{calrsfs}
 
@@ -82,20 +82,20 @@
 %\usepackage{wrapfig}
 %\usepackage{subfig}
 %\usepackage{float} % floating figures
-\usepackage{caption}
-\usepackage{subcaption}
+\usepackage[font=scriptsize]{caption}
+%\usepackage{subcaption}
 
 %=================\
 % Draw Graphics
 %=================
-\usepackage{siunitx}
-\sisetup{
-load-configurations=abbreviations,
-load-configurations=binary,
+%\usepackage{siunitx}
+%\sisetup{
+%load-configurations=abbreviations,
+%load-configurations=binary,
 %detect-family,
 %detect-display-math = true,
-mode=math
-}
+%mode=math
+%}
 
 %=================
 % PDF options
@@ -119,7 +119,7 @@ mode=math
 %=================
 % Listings
 %=================
-\usepackage{textcomp} % symbols
+%\usepackage{textcomp} % symbols
 %\usepackage{listings} % issues with beamer
 
 %=================
@@ -128,7 +128,7 @@ mode=math
 %\usepackage{multirow}
 %\usepackage{tabularx}
 %\usepackage{tabulary} % less apealling alternative is tabularx, example: \begin{tabulary}{0.75\textwidth}{|L|L|}
-\usepackage{ctable} % for table footnotes, captions, includes booktabs
+%\usepackage{ctable} % for table footnotes, captions, includes booktabs
 %\usepackage{booktabs} % included with ctable
 
 %=================
