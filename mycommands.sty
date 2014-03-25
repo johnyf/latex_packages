@@ -112,7 +112,7 @@
 }{}
 %
 \newcounter{linectr}%
-\newcommand*\multincludegraphics[2][]{%
+\newcommand\multincludegraphics[2][]{%
 	\setkeys{figs}{#1}{
 		\setcounter{linectr}{0}%
 		\forloop{ct}{\ctmin}{\not{\value{ct} > \ctmax}}{%
@@ -173,7 +173,7 @@
 	tex=true
 }{}
 
-\newcommand*\includesvg[2][]{%
+\newcommand\includesvg[2][]{%
 	\setkeys{svg}{#1}{
 		\ifKV@svg@tex%
 			\immediate\write18{inkscape2tex.py -i #2 -m latex-pdf}%
@@ -244,7 +244,7 @@
 	width=\textwidth
 }{}
 
-\newcommand*\includesvgs[2][]{%
+\newcommand\includesvgs[2][]{%
 	\setkeys{svgs}{#1}{
 		\setcounter{linectr}{0}%
 		\forloop{ct}{\ctmin}{\value{ct} < \ctmax}{%
