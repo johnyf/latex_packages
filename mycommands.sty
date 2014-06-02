@@ -222,6 +222,8 @@
 % for i=(i_min) :(i_max -1)
 %    figure with ''filename''i''extension''
 \makeatletter
+\define@boolkey{svgs}{subfig}[true]{}%
+
 \define@boolkey{svgs}{fit}[true]{}%
 \define@key{svgs}{min}{%
 	\def\ctmin{#1}
@@ -241,7 +243,8 @@
 	min=0,
 	max=1,
 	perline=1,
-	width=\textwidth
+	width=\textwidth,
+	subfig=true
 }{}
 
 \newcommand\includesvgs[2][]{%
@@ -249,16 +252,30 @@
 		\setcounter{linectr}{0}%
 		\forloop{ct}{\ctmin}{\value{ct} < \ctmax}{%
 			\stepcounter{linectr}%
+			
 			\ifKV@svgs@fit
 				\begin{adjustbox}{max size={\textwidth}{\textheight}}
 					\includesvg{#2\arabic{ct}}%
 				\end{adjustbox}
 			\else
-				\ifthenelse{\isempty{\mysvgwidth}}{%
-					\includesvg{#2\arabic{ct}}%
-				}{%
-					\includesvg[width=\mysvgwidth]{#2\arabic{ct}}%
-				}%
+				\ifKV@svgs@subfig
+					\ifthenelse{\isempty{\mysvgwidth}}{%
+						\begin{subfigure}{\textwidth}%
+					}{%
+						\begin{subfigure}{\mysvgwidth}%
+					}%
+					%
+					\includesvg[width=\textwidth]{#2\arabic{ct}}%%
+					\caption{}%to show the (a), (b) etc
+					\label{subfig:#2\arabic{ct}}%
+					\end{subfigure}
+				\else
+					\ifthenelse{\isempty{\mysvgwidth}}{%
+						\includesvg{#2\arabic{ct}}%
+					}{%
+						\includesvg[width=\mysvgwidth]{#2\arabic{ct}}%
+					}%
+				\fi
 			\fi
 			\ifthenelse{\cnttest{\value{linectr}}={\perline}}{%
 				\\%
