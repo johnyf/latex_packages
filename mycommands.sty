@@ -21,6 +21,21 @@
 \newcommand{\algorithmautorefname}{Algorithm}%
 
 %-------------------------------------------
+% wrapper for subfigure environment of package subcaption
+%-------------------------------------------
+\makeatletter
+\@ifpackageloaded{subcaption}{%
+	\def\defaultSubfigWidth{0.9\textwidth}
+	\newcommand{\subfig}[2][\defaultSubfigWidth]{
+		\begin{subfigure}{#1}
+			\centering
+			#1
+		\end{subfigure}
+	}
+}%
+\makeatother
+
+%-------------------------------------------
 % SINGLE FIGURE
 %-------------------------------------------
 % \myfig{file}{caption}{width or left empty}{label}
