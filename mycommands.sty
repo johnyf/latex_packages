@@ -68,6 +68,8 @@
 % for i=(i_min) :(i_max -1)
 %    figure with ''filename''i''extension''
 \newcounter{ct}%
+\newcounter{b}%
+
 \newcommand{\figs}[6]{%
 	\forloop{ct}{#1}{\value{ct} < #2}{%
 		\begin{figure}%
@@ -343,6 +345,28 @@
 			\llap{\includegraphics<\arabic{ct}>[width=#3]{#4\arabic{ct}#5}}%
 		}%
 	\end{figure}%
+}%
+
+%-------------------------------------------
+% BAEAMER: STACKED DOT2TEX GRAPHS
+%-------------------------------------------
+%
+% \animatedot[dot2tex options]{5}{./img/mynice}
+%
+% 5 = max counter - 1
+% mynice0.dot, ..., mynice4.dot
+%
+\newcommand{\animatedot}[3][]{%
+\begin{overprint}%
+	\setcounter{ct}{0}%
+	\forloop{ct}{0}{\value{ct} < #2}{%
+		\setcounter{b}{\value{ct}}%
+		\addtocounter{b}{1}%
+		\only<\arabic{b}>{%
+			\includedottex[#1]{#3\arabic{ct}.dot}%
+		}%
+	}%
+\end{overprint}%
 }%
 
 %-------------------------------------------
