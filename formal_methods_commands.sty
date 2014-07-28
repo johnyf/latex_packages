@@ -1,0 +1,57 @@
+% commands for formal methods
+%
+% the following might prove useful as well:
+%	https://svn.kwarc.info/repos/arXMLiv/trunk/sty/temporal.sty
+%	
+
+%\usepackage{circle}
+
+% LTL commands
+%\newcommand{\ltl}{LTL$_{X^-}$}%
+\newcommand{\ltl}{LTL }%
+\newcommand{\until}[1][\undefined]{%
+	\ifx#1\undefined%
+		\hspace{2pt}\mathcal{U}%
+	\else%
+		\hspace{2pt}\mathcal{U}_{#1}%
+	\fi%
+}%
+\newcommand{\always}[1][\undefined]{%
+	\ifx#1\undefined%
+		\square%
+	\else%
+		\square_{#1}%
+	\fi%
+}%
+\newcommand{\eventually}[1][\undefined]{%
+	\ifx#1\undefined%
+		\Diamond%
+	\else%
+		\Diamond_{#1}%
+	\fi%
+}%
+\newcommand{\nxt}[1][\undefined]{%
+	\ifx#1\undefined%
+		{\scriptstyle\bigcirc}
+	\else%
+		\setcounter{ct}{1}%
+		{\scriptstyle\bigcirc}%
+		\forloop{ct}{1}{\value{ct} < #1}{%
+			{\scriptstyle\bigcirc}
+		}%
+	\fi%
+}%
+\newcommand{\X}[1][\undefined]{\nxt[#1]}%
+
+\newcommand{\true}{\mathrm{true}}%
+\newcommand{\false}{\mathrm{false}}%
+
+% 2014 SPIN
+\def\NC{\textsc{NC}}%
+\def\Ptime{\textsc{P}}%
+\def\Pspace{\textsc{Pspace}}%
+
+\newcommand{\acc}[1]{\mathrm{acc}(#1)}%
+\def\nBA{\mathcal{A}_{\neg\varphi}}%
+\def\TS{\mathcal{T}}%
+\def\PA{\TS\otimes\nBA}%
