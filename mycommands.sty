@@ -339,9 +339,9 @@
 \newcommand{\slideshow}[5]{%
 	\begin{figure}%
 		\centering%
-		\setcounter{ct}{1}%
+		\setcounter{ct}{0}%
 		\includegraphics<\arabic{ct}->[width=#3]{#4\arabic{ct}#5}%
-		\forloop{ct}{2}{\value{ct} < #2}{%
+		\forloop{ct}{1}{\value{ct} < #2}{%
 			\llap{\includegraphics<\arabic{ct}>[width=#3]{#4\arabic{ct}#5}}%
 		}%
 	\end{figure}%
