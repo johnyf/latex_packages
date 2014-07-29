@@ -7,6 +7,8 @@
 \usepackage{forloop}
 \usepackage{xkeyval}
 \usepackage{adjustbox}
+\usepackage{calc}
+%\usepackage{fmtcount}
 
 %=================
 % Figures
@@ -330,22 +332,65 @@
 %-------------------------------------------
 % BEAMER SEQUENCE OF SUPERIMPOSED FIGURES
 %-------------------------------------------
-% \slideshow{}{i_max}{width}{filename w/o extension}{extension}
+% \slideshow[min=0,max=2,ext=.pdf]{./img/fig_}
 %
-% beamer
-% figure with superimposed
-% for i=1 :(i_max -1)
-%    ''filename''i''extension''
-\newcommand{\slideshow}[5]{%
-	\begin{figure}%
-		\centering%
-		\setcounter{ct}{0}%
-		\includegraphics<\arabic{ct}->[width=#3]{#4\arabic{ct}#5}%
-		\forloop{ct}{1}{\value{ct} < #2}{%
-			\llap{\includegraphics<\arabic{ct}>[width=#3]{#4\arabic{ct}#5}}%
+% includes: ./img/fig_0.pdf, ./img/fig_1.pdf
+%
+% compilation speed is comparable to animate
+% the advantage though is avoiding javascript,
+% hence the need to use adobe acrobat
+\makeatletter
+%note: \@anim@@pad borrowed from package animate,
+%    cp its def here if you want to be independent from it
+\@ifpackageloaded{animate}{%
+
+\define@key{slideshow}{min}{%
+	\def\ctmin{#1}
+}
+
+\define@key{slideshow}{max}{%
+	\def\ctmax{#1}%
+}
+
+\define@key{slideshow}{width}{%
+	\def\myfigwidth{#1}%
+}
+
+\define@key{slideshow}{ext}{%
+	\def\myextension{#1}%
+}
+
+\savekeys{slideshow}{min,max,width,ext}%
+
+\presetkeys{slideshow}{%
+	min=0,
+	max=1,
+	width=\textwidth,
+	ext=.pdf,
+}{}
+%
+
+%\def\three@digits#1{\ifnum#1>99\else\ifnum#1>9 0\else00\fi\fi\number#1}
+
+\newcounter{slidect}
+\newcommand\slideshow[2][]{%
+	\setkeys{slideshow}{#1}{
+		\setcounter{ct}{\ctmin}
+		\setcounter{slidect}{1}
+		\includegraphics<\arabic{slidect}->[width=\myfigwidth]{\detokenize{#2}\@anim@pad{\ctmax}{\arabic{ct}}\myextension}%
+		%
+		\forloop{ct}{\ctmin + 1}{{\value{ct} < \ctmax}}{%
+			\stepcounter{slidect}%
+			%filename enclosed by {} to avoid issues with periods
+			\def\imgfile{\detokenize{#2}\@anim@pad{\ctmax}{\arabic{ct}}\myextension}%
+			\llap{\includegraphics<\arabic{slidect}>[width=\myfigwidth]{\imgfile}}%
 		}%
-	\end{figure}%
+	}%
 }%
+}%
+
+}%
+\makeatother
 
 %-------------------------------------------
 % BAEAMER: STACKED DOT2TEX GRAPHS
