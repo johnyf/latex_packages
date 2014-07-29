@@ -356,6 +356,8 @@
 % 5 = max counter - 1
 % mynice0.dot, ..., mynice4.dot
 %
+\makeatletter
+\@ifpackageloaded{dot2texi}{%
 \newcommand{\animatedot}[3][]{%
 \begin{overprint}%
 	\setcounter{ct}{0}%
@@ -368,6 +370,8 @@
 	}%
 \end{overprint}%
 }%
+}%
+\makeatother
 
 %-------------------------------------------
 % BEAMER LAYERED FIGURE
