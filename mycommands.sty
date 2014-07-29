@@ -363,7 +363,7 @@
 		\setcounter{b}{\value{ct}}%
 		\addtocounter{b}{1}%
 		\only<\arabic{b}>{%
-			\includedottex[#1]{#3\arabic{ct}.dot}%
+			\includedot[#1]{#3\arabic{ct}.dot}%
 		}%
 	}%
 \end{overprint}%
@@ -402,16 +402,16 @@
 }%
 
 %-------------------------------------------
-% SINGLE DOT
+% SINGLE DOT via Inkscape SVG + LaTeX
 %-------------------------------------------
-% \includedot[width]{relative_path}
+% \includedotsvg[width]{relative_path}
 %
 % width = 0.9\textwidth (for example)
 % relative_path = relative path to DOT file, without its extension
 %
 % export for LaTeX .dot to .svg then to .pdf and
 % include .pdf_tex which inputs the produced .pdf
-\newcommand{\includedot}[2][\undefined]{%
+\newcommand{\includedotsvg}[2][\undefined]{%
 	%\immediate\write18{dot #2.dot -Tsvg -o #2.svg}%
 	%\includesvg[#1]{#2}%
 	%
