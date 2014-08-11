@@ -4,12 +4,13 @@
 %	https://svn.kwarc.info/repos/arXMLiv/trunk/sty/temporal.sty
 %	
 
-\usepackage{amssymb}
+\usepackage{ltlfonts}
 %\usepackage{circle}
 
 % LTL commands
 %\newcommand{\ltl}{LTL$_{X^-}$}%
 \newcommand{\ltl}{LTL }%
+
 \newcommand{\until}[1][\undefined]{%
 	\ifx#1\undefined%
 		\hspace{2pt}\mathcal{U}%
@@ -19,26 +20,26 @@
 }%
 \newcommand{\always}[1][\undefined]{%
 	\ifx#1\undefined%
-		\square%
+		\LTLsquare%
 	\else%
-		\square_{#1}%
+		\LTLsquare_{#1}%
 	\fi%
 }%
 \newcommand{\eventually}[1][\undefined]{%
 	\ifx#1\undefined%
-		\lozenge
+		\LTLdiamond
 	\else%
-		\lozenge_{#1}%
+		\LTLdiamond_{#1}%
 	\fi%
 }%
 \newcommand{\nxt}[1][\undefined]{%
 	\ifx#1\undefined%
-		{\scriptstyle\bigcirc}
+		\LTLcircle%
 	\else%
 		\setcounter{ct}{1}%
-		{\scriptstyle\bigcirc}%
+		\LTLcircle%
 		\forloop{ct}{1}{\value{ct} < #1}{%
-			{\scriptstyle\bigcirc}
+			\LTLcircle%
 		}%
 	\fi%
 }%
