@@ -35,6 +35,13 @@
 \newcommand{\Break}{\textbf{break}}
 \newcommand{\Continue}{\textbf{continue}}
 
+\@ifpackageloaded{algpseudocode}{%
+\algtext*{EndIf}
+\algtext*{EndFor}
+\algtext*{EndWhile}
+\algtext*{EndProcedure}
+}
+
 %-------------------------------------------
 % wrapper for subfigure environment of package subcaption
 %-------------------------------------------
