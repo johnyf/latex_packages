@@ -397,8 +397,7 @@
 		\forloop{ct}{\ctmin + 1}{{\value{ct} < \ctmax}}{%
 			\stepcounter{slidect}%
 			%filename enclosed by {} to avoid issues with periods
-			\def\imgfile{\detokenize{#2}\@anim@pad{\ctmax}{\arabic{ct}}\myextension}%
-			\llap{\includegraphics<\arabic{slidect}>[width=\myfigwidth]{\imgfile}}%
+			\llap{\includegraphics<\arabic{slidect}>[width=\myfigwidth]{\detokenize{#2}\@anim@pad{\ctmax}{\arabic{ct}}\myextension}}%
 		}%
 	}%
 }%
