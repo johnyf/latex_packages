@@ -6,7 +6,7 @@
 %
 % 2011-2014 (c) Ioannis Filippidis, jfilippidis@gmail.com
 
-\usepackage{ltlfonts}
+\usepackage{ltlfonts,mathtools}
 %\usepackage{circle}
 
 % LTL commands
@@ -52,6 +52,8 @@
 \def\once{\LTLdiamondminus}
 \def\historically{\LTLsquareminus}
 \def\since{\mathcal{S}}
+\def\cox{\mathrlap{\bigcirc}\eventually}
+\def\mox{\rotatebox[origin=c]{45}{$\cox$}}
 
 \newcommand{\true}{\mathrm{true}}%
 \newcommand{\false}{\mathrm{false}}%
@@ -65,3 +67,21 @@
 \def\nBA{\mathcal{A}_{\neg\varphi}}%
 \def\TS{\mathcal{T}}%
 \def\PA{\TS\otimes\nBA}%
+
+% games
+\usepackage{stmaryrd}
+
+\def\cox{\mathrlap{\bigcirc}\eventually}
+\def\Trap{\mathrm{Trap}}
+\def\Back{\mathrm{Back}}
+\def\Pre{\mathrm{Pre}}
+\def\CPre{\mathrm{CPre}}
+\def\Attr{\mathrm{Attr}}
+\def\Reach{\mathrm{Reach}}
+\def\Recur{\mathrm{Recur}}
+\def\CRecur{\mathrm{CRecur}}
+\newcommand{\dbr}[1]{\llbracket #1 \rrbracket}
+\newcommand{\lang}[1]{\mathcal{L}(#1)}
+\newcommand{\Tail}[1]{\mathrm{Tail}(#1)}
+\newcommand{\PrefCl}[2][]{\overline{\mathrm{Pref}}_{#1}\left(#2\right)}
+\newcommand{\SuffCl}[2][]{\underline{\mathrm{Suff}}_{#1}\left(#2\right)}
