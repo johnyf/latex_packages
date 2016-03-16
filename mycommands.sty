@@ -34,15 +34,23 @@
 \newcommand{\algorithmautorefname}{Algorithm}%
 
 % for algseudocode
-\newcommand{\Break}{\textbf{break}}
-\newcommand{\Continue}{\textbf{continue}}
-
 \@ifpackageloaded{algpseudocode}{%
-\algtext*{EndIf}
-\algtext*{EndFor}
-\algtext*{EndWhile}
-\algtext*{EndProcedure}
-}
+	\newcommand{\Break}{\textbf{break}}
+	\newcommand{\Continue}{\textbf{continue}}
+	\algrenewcommand\algorithmicprocedure{\textbf{def}}
+	\algrenewcommand\algorithmicdo{\textbf{:}}
+	\algrenewcommand\algorithmicthen{\textbf{:}}
+	\algtext*{EndIf}
+	\algtext*{EndFor}
+	\algtext*{EndWhile}
+	\algtext*{EndProcedure}
+	\newcommand{\algoline}[1]{\label[algoline]{#1}}%
+	\newcommand{\aref}[1]{L\ref{#1}}
+	\crefname{algorithm}{Algorithm}{Algorithms}%
+	% \crefname{algorithm}{Alg.}{Algs.}  % short ref name
+	\crefname{algoline}{L\!}{L\!}%
+}%
+
 
 %-------------------------------------------
 % wrapper for subfigure environment of package subcaption
