@@ -1,15 +1,11 @@
-% custom settings for the ieeeconf.cls
-
-%\usepackage{cleveref}%
-
-% memo: theorem environments are defined in package mycommands.
-
+% custom settings for the `ieeeconf.cls`
+% turn-on short theorem names
+%
+% \usepackage{amsthm}  % conflicts with `ieeeconf`
+% \usepackage{cleveref}%
 \def\sectionautorefname{\S}%
 \def\subsectionautorefname{\S}%
 \def\subsubsectionautorefname{\S}%
-%\renewcommand{\equationautorefname}{}%
-
 \crefname{section}{Sec.}{Secs.}%
-
-
-%\renewcommand{\cref}[1]{\cref*{#1}}%
+% \renewcommand{\equationautorefname}{}%
+% \renewcommand{\cref}[1]{\cref*{#1}}%

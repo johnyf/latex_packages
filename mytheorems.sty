@@ -17,12 +17,11 @@
 \usepackage{calc}
 \usepackage{color}
 \usepackage{amsopn}
-%\usepackage{fmtcount}
+% \usepackage{fmtcount}
 
 
 % theorem environments
 %\def\coloredthm{1}
-
 \ifx\beamerbutton\undefined%
 	\ifx\coloredthm\undefined%
 		\makeatletter
@@ -198,6 +197,7 @@
 \newcommand{\corlab}[1]{\label[corollary]{#1}}%
 \newcommand{\remlab}[1]{\label[remark]{#1}}%
 
+
 %=========================================
 % Example Usage of theoremstyles in beamer
 %=========================================
@@ -234,9 +234,12 @@
 %\end{frame}
 %=========================================
 
-% theorem environments with common numbering
 
-% fix ref auto-naming
+%=========================================
+% automatic reference names
+%=========================================
+
+% long
 \crefname{definition}{Definition}{Definitions}%
 \crefname{problem}{Problem}{Problems}%
 \crefname{proposition}{Proposition}{Propositions}%
