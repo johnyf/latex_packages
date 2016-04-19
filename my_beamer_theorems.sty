@@ -1,0 +1,186 @@
+\NeedsTeXFormat{LaTeX2e}
+\ProvidesPackage{my_beamer_theorems}%
+% Definitions of beamer theorem environments and refnames.
+%
+% Copyright (BSD-2) 2009-2016 by Ioannis Filippidis
+% author's email: jfilippidis@gmail.com
+
+
+\usepackage{adjustbox}
+\usepackage{calc}
+\usepackage{color}
+\usepackage{amsopn}
+
+\definecolor{YellowGreen}{rgb}{0.6,0.8,0.2}
+\definecolor{Melon}{rgb}{1.0,0.74,0.7}
+	
+%	\let\OLDdefinition=\definition
+%	\def\definition{%
+%		\setbeamercolor{block title}{fg=white,bg=YellowGreen!50!black}%
+%		\setbeamercolor{block body}{fg=black,bg=YellowGreen!20}\OLDdefinition
+%	}
+%	
+%	\let\OLDlemma=\lemma
+%	\def\lemma{%
+%		\setbeamercolor{block title}{fg=white,bg=Melon!50!black}%
+%		\setbeamercolor{block body}{fg=black,bg=Melon!20}\OLDlemma
+%	}
+%	
+%	\let\OLDtheorem=\theorem
+%	\def\theorem{%
+%		\setbeamercolor{block title}{fg=white,bg=orange!50!black}%
+%		\setbeamercolor{block body}{fg=black,bg=orange!20}\OLDtheorem
+%	}
+%	
+%	\let\OLDcorollary=\corollary
+%	\def\corollary{%
+%		\setbeamercolor{block title}{fg=white,bg=cyan!50!black}%
+%		\setbeamercolor{block body}{fg=black,bg=cyan!30}\OLDcorollary
+%	}
+
+\let\definition\relax
+\newenvironment<>{definition}[1][\undefined]{%
+\begin{actionenv}#2%
+\ifx#1\undefined%
+	\def\insertblocktitle{Definition}%
+\else%
+	\def\insertblocktitle{Definition ({\em#1})}%
+\fi%
+\par%
+\mode<presentation>{%
+	\setbeamercolor{block title}{fg=white,bg=YellowGreen!50!black}%
+	\setbeamercolor{block body}{fg=black,bg=YellowGreen!20}%
+}%
+\usebeamertemplate{block begin}}
+{\par\usebeamertemplate{block end}\end{actionenv}}
+
+
+\newenvironment<>{assumption}[1][\undefined]{%
+\begin{actionenv}#2%
+\ifx#1\undefined%
+	\def\insertblocktitle{Assumption}%
+\else%
+	\def\insertblocktitle{Assumption ({\em#1})}%
+\fi%
+\par%
+\mode<presentation>{%
+	\setbeamercolor{block title}{fg=white,bg=red!50!black}%
+	\setbeamercolor{block body}{fg=black,bg=red!20}%
+}%
+\usebeamertemplate{block begin}}
+{\par\usebeamertemplate{block end}\end{actionenv}}
+
+\newenvironment<>{proposition}[1][\undefined]{%
+\begin{actionenv}#2%
+\ifx#1\undefined%
+	\def\insertblocktitle{Proposition}%
+\else%
+	\def\insertblocktitle{Proposition ({\em#1})}%
+\fi%
+\par%
+\mode<presentation>{%
+	\setbeamercolor{block title}{fg=white,bg=yellow!50!black}%
+	\setbeamercolor{block body}{fg=black,bg=yellow!20}%
+}%
+\usebeamertemplate{block begin}}
+{\par\usebeamertemplate{block end}\end{actionenv}}
+
+\let\lemma\relax
+\newenvironment<>{lemma}[1][\undefined]{%
+\begin{actionenv}#2%
+\ifx#1\undefined%
+	\def\insertblocktitle{Lemma}%
+\else%
+	\def\insertblocktitle{Lemma ({\em#1})}%
+\fi%
+\par%
+\mode<presentation>{%
+	\setbeamercolor{block title}{fg=white,bg=Melon!50!black}%
+	\setbeamercolor{block body}{fg=black,bg=Melon!20}%
+}%
+\usebeamertemplate{block begin}}
+{\par\usebeamertemplate{block end}\end{actionenv}}
+
+\let\theorem\relax
+\newenvironment<>{theorem}[1][\undefined]{%
+\begin{actionenv}#2%
+\ifx#1\undefined%
+	\def\insertblocktitle{Theorem}%
+\else%
+	\def\insertblocktitle{Theorem ({\em#1})}%
+\fi%
+\par%
+\mode<presentation>{%
+	\setbeamercolor{block title}{fg=white,bg=orange!50!black}%
+	\setbeamercolor{block body}{fg=black,bg=orange!20}%
+}%
+\usebeamertemplate{block begin}}
+{\par\usebeamertemplate{block end}\end{actionenv}}
+
+\let\corollary\relax
+\newenvironment<>{corollary}[1][\undefined]{%
+\begin{actionenv}#2%
+\ifx#1\undefined%
+	\def\insertblocktitle{Corollary}%
+\else%
+	\def\insertblocktitle{Corollary ({\em#1})}%
+\fi%
+\par%
+\mode<presentation>{%
+	\setbeamercolor{block title}{fg=white,bg=cyan!50!black}%
+	\setbeamercolor{block body}{fg=black,bg=cyan!30}%
+}%
+\usebeamertemplate{block begin}}
+{\par\usebeamertemplate{block end}\end{actionenv}}
+
+\newenvironment<>{remark}[1][\undefined]{%
+\begin{actionenv}#2%
+\ifx#1\undefined%
+	\def\insertblocktitle{Remark}%
+\else%
+	\def\insertblocktitle{Remark ({\em#1})}%
+\fi%
+\par%
+\mode<presentation>{%
+	\setbeamercolor{block title}{fg=white,bg=red!50!black}%
+	\setbeamercolor{block body}{fg=black,bg=red!20}%
+}%
+\usebeamertemplate{block begin}}
+{\par\usebeamertemplate{block end}\end{actionenv}}
+
+
+%=========================================
+% Example Usage of theoremstyles in beamer
+%=========================================
+%\begin{frame}{Testing theoremstyles 1}{custom}
+%	\begin{definition}[one]
+%		hello
+%	\end{definition}
+%	
+%	\begin{assumption}[two]
+%		hello
+%	\end{assumption}
+%	
+%	\begin{proposition}[three]
+%		hello
+%	\end{proposition}
+%\end{frame}
+%
+%\begin{frame}{Testing theoremstyles 2}{custom}
+%	\begin{lemma}[four]
+%		hello
+%	\end{lemma}
+%	
+%	\begin{theorem}[five]
+%		hello
+%	\end{theorem}
+%	
+%	\begin{corollary}[six]
+%		hello
+%	\end{corollary}
+%
+%	\begin{remark}[seven]
+%		hello
+%	\end{remark}
+%\end{frame}
+%=========================================
