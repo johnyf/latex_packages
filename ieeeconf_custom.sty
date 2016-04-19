@@ -9,3 +9,19 @@
 \crefname{section}{Sec.}{Secs.}%
 % \renewcommand{\equationautorefname}{}%
 % \renewcommand{\cref}[1]{\cref*{#1}}%
+
+\usepackage{mytheorems}
+% no `theoremstyle` used
+% because it changes `ieeeconf` style
+% and needs `amsthm`, which conflicts with `ieeeconf`
+\newtheorem{definition}{Definition}
+\newtheorem{assumption}[definition]{Assumption}
+\newtheorem{problem}[definition]{Problem}
+%
+\newtheorem{proposition}[definition]{Proposition}
+\newtheorem{lemma}[definition]{Lemma}
+\newtheorem{theorem}[definition]{Theorem}
+\newtheorem{corollary}[definition]{Corollary}
+%
+\newtheorem{remark}[definition]{Remark}
+\newtheorem{example}{Example}

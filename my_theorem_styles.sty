@@ -1,0 +1,18 @@
+% Defines theorem environments using `amsthm`
+% cannot be used in `ieeeconf` or `llncs`
+\NeedsTeXFormat{LaTeX2e}
+\ProvidesPackage{my_theorem_styles}
+\usepackage{amsthm}
+\usepackage{mytheorems}
+
+\newtheorem{definition}{Definition}
+\newtheorem{assumption}[definition]{Assumption}
+\newtheorem{problem}[definition]{Problem}
+
+\newtheorem{proposition}[definition]{Proposition}
+\newtheorem{lemma}[definition]{Lemma}
+\newtheorem{theorem}[definition]{Theorem}
+\newtheorem{corollary}[definition]{Corollary}
+
+\newtheorem{remark}[definition]{Remark}
+\newtheorem{example}{Example}
