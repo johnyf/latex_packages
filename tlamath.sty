@@ -41,8 +41,8 @@
 	\renewcommand{\always}{\LTLsquare}
 	\renewcommand{\implies}{\Rightarrow}
 	% quantifiers
-	\newcommand{\A}{\forall}
-	\newcommand{\E}{\exists}
+	\DeclareMathOperator{\A}{\forall}
+	\DeclareMathOperator{\E}{\exists}
 	\renewcommand{\AA}{\makebox{$\raisebox{.05em}{\makebox[0pt][l]{%
 	   $\forall\hspace{-.517em}\forall\hspace{-.517em}\forall$}}%
 	   \forall\hspace{-.517em}\forall \hspace{-.517em}\forall\,$}}
@@ -57,3 +57,4 @@
 % \def\tla{TLA}
 \def\tlaplus{TLA\textsuperscript{+}}
 \newcommand{\Cl}[2][]{\mathcal{C}_{#1}\big(#2\big)}
+
