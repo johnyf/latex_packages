@@ -1,3 +1,11 @@
+% (c) 1994, 1998, 2001 by Leslie Lamport
+%
+% Some commands originate from the  `tla2texplus-book.sty`,
+% and its earlier version `tla2.sty`.
+%
+% A wrapper around the `proof` environment of the `pf2` package is included,
+% to allow importing `amsthm`. However, I do not use it much any more,
+% so it will likely be removed in the future.
 \NeedsTeXFormat{LaTeX2e}
 \ProvidesPackage{tlamath}
 \usepackage{amsmath}
@@ -57,4 +65,3 @@
 % \def\tla{TLA}
 \def\tlaplus{TLA\textsuperscript{+}}
 \newcommand{\Cl}[2][]{\mathcal{C}_{#1}\big(#2\big)}
-
