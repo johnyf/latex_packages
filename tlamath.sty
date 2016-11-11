@@ -1,8 +1,5 @@
 % (c) 1994, 1998, 2001 by Leslie Lamport
 %
-% Some commands originate from the  `tla2texplus-book.sty`,
-% and its earlier version `tla2.sty`.
-%
 % A wrapper around the `proof` environment of the `pf2` package is included,
 % to allow importing `amsthm`. However, I do not use it much any more,
 % so it will likely be removed in the future.
@@ -27,39 +24,13 @@
 \end{mdframed}
 }
 % operators
+\renewcommand{\always}{\LTLsquare}
 \def\al{\always}
 \def\ev{\eventually}
 \def\none{\mathrm{None}}
 \newcommand{\tuple}[1]{\langle#1\rangle}
 %
 \makeatletter
-\@ifpackageloaded{tla2texplus-book}{}{
-\@ifpackageloaded{tla}{}{
-	\newcommand{\CHOOSE}{\mbox{\sc choose }}
-	\newcommand{\UNION}{\mbox{\sc union }}
-	\newcommand{\EXCEPT}{\mbox{\sc except }}
-	\newcommand{\TRUE}{\textsc{true}}
-	\newcommand{\FALSE}{\textsc{false}}
-	\newcommand{\DOMAIN}{\textsc{domain }}
-	\newcommand{\IF}{\textsc{ if }}
-	\newcommand{\THEN}{\textsc{ then }}
-	\newcommand{\ELSE}{\textsc{ else }}
-	\newcommand{\LET}{\textsc{ let }}
-	\newcommand{\IN}{\textsc{ in }}
-	\renewcommand{\always}{\LTLsquare}
-	\renewcommand{\implies}{\Rightarrow}
-	% quantifiers
-	\DeclareMathOperator{\A}{\forall}
-	\DeclareMathOperator{\E}{\exists}
-	\renewcommand{\AA}{\makebox{$\raisebox{.05em}{\makebox[0pt][l]{%
-	   $\forall\hspace{-.517em}\forall\hspace{-.517em}\forall$}}%
-	   \forall\hspace{-.517em}\forall \hspace{-.517em}\forall\,$}}
-	\newcommand{\EE}{\makebox{$\raisebox{.05em}{\makebox[0pt][l]{%
-	   $\exists\hspace{-.517em}\exists\hspace{-.517em}\exists$}}%
-	   \exists\hspace{-.517em}\exists\hspace{-.517em}\exists\,$}}
-	\def\tla@while{-\hspace{-.18em}\triangleright}
-	\def\tlawhilep{\stackrel{\mbox{\raisebox{-.3em}[0pt][0pt]{$\scriptscriptstyle+\;\,$}}}{\tla@while}}
-}}
 \def\strictarrow{\stackrel{\mbox{\raisebox{-.3em}[0pt][0pt]{$\scriptscriptstyle\mathrm{sr}\;\,$}}}{\tla@while}}
 \makeatother
 % \def\tla{TLA}
