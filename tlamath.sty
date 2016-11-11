@@ -12,7 +12,8 @@
 % DO NOT USE `hyperref`, because it causes problems with `tla2texplus-book`
 % \usepackage[math]{fontspec}  % destroys both the math italics of `abbrev`, as well as indentation
 % \usepackage{hypertlabook} % causes too many errors
-\newenvironment{pf2proof}{
+\newenvironment{boxedproofs}{
+\let\pfproof\proof
 \providecommand{\proof}{}
 \renewenvironment{proof}{
 \begin{pfproof}
