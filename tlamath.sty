@@ -7,23 +7,10 @@
 \ProvidesPackage{tlamath}
 \usepackage{amsmath}
 \usepackage{mdframed}
-% proof environment from `pf2.sty`
 %
 % DO NOT USE `hyperref`, because it causes problems with `tla2texplus-book`
 % \usepackage[math]{fontspec}  % destroys both the math italics of `abbrev`, as well as indentation
 % \usepackage{hypertlabook} % causes too many errors
-\newenvironment{boxedproofs}{
-\let\pfproof\proof
-\providecommand{\proof}{}
-\renewenvironment{proof}{
-\begin{pfproof}
-}{
-\end{pfproof}
-}
-\begin{mdframed}
-}{
-\end{mdframed}
-}
 % operators
 \renewcommand{\always}{\LTLsquare}
 \def\al{\always}
