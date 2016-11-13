@@ -19,7 +19,10 @@
 \newcommand{\tuple}[1]{\langle#1\rangle}
 %
 \makeatletter
-\def\strictarrow{\stackrel{\mbox{\raisebox{-.3em}[0pt][0pt]{$\scriptscriptstyle\mathrm{sr}\;\,$}}}{\tla@while}}
+\def\strictarrow{%
+    \stackrel{\mbox{%
+        \raisebox{-.3em}[0pt][0pt]{$\scriptscriptstyle\mathrm{sr}\;\,$}}}{%
+            -\hspace{-.16em}\triangleright}}
 \makeatother
 % \def\tla{TLA}
 \def\tlaplus{TLA\textsuperscript{+}}
