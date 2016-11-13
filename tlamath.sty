@@ -3,10 +3,37 @@
 % A wrapper around the `proof` environment of the `pf2` package is included,
 % to allow importing `amsthm`. However, I do not use it much any more,
 % so it will likely be removed in the future.
+%
+% I cannot seem to be able to get abbreviations to work in `beamer` yet.
 \NeedsTeXFormat{LaTeX2e}
 \ProvidesPackage{tlamath}
 \usepackage{amsmath}
+\usepackage{etoolbox}
 \usepackage{mdframed}
+% clean up before loading `tlaplus.sty`
+%
+% defined in:
+% `ieeeconf.cls`
+% `amsthm`
+% `beamer`
+\ifdef{\proof}{
+    \typeout{WARNING: "proof" already defined, to be deleted}
+    \let\proof\undefined}{}
+\ifdef{\endproof}{
+    \typeout{WARNING: "endproof" already defined, to be deleted}
+    \let\endproof\undefined}{}
+% `beamer`
+\ifdef{\qed}{
+    \typeout{WARNING: "qed" already defined, to be deleted}
+    \let\qed\undefined}{}
+% `ieeeconf.cls`
+\ifdef{\QED}{
+    \typeout{WARNING: "QED" already defined, to be deleted}
+    \let\QED\undefined}{}
+% `amsthm`
+\ifdef{\implies}{
+    \typeout{WARNING: "implies" already defined, to be deleted}
+    \let\implies\undefined}{}
 %
 % DO NOT USE `hyperref`, because it causes problems with `tla2texplus-book`
 % \usepackage[math]{fontspec}  % destroys both the math italics of `abbrev`, as well as indentation
