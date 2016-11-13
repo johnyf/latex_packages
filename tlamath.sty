@@ -12,8 +12,8 @@
 % \usepackage[math]{fontspec}  % destroys both the math italics of `abbrev`, as well as indentation
 % \usepackage{hypertlabook} % causes too many errors
 % operators
-\renewcommand{\always}{\LTLsquare}
-\def\al{\always}
+\let\always\undefined
+\newcommand{\always}{\LTLsquare}
 \def\ev{\eventually}
 \def\none{\mathrm{None}}
 \newcommand{\tuple}[1]{\langle#1\rangle}
