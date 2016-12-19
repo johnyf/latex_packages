@@ -9,7 +9,6 @@
 \NeedsTeXFormat{LaTeX2e}
 \ProvidesPackage{formal_methods_commands}
 \usepackage{ltlfonts}
-\usepackage{stmaryrd}  % used to define `\dbr`
 % \usepackage{circle}
 % LTL commands
 %\newcommand{\ltl}{LTL$_{X^-}$}%
@@ -71,7 +70,6 @@
 \def\Reach{\mathrm{Reach}}
 \def\Recur{\mathrm{Recur}}
 \def\CRecur{\mathrm{CRecur}}
-\newcommand{\dbr}[1]{\llbracket #1 \rrbracket}
 \newcommand{\lang}[1]{\mathcal{L}(#1)}
 \newcommand{\Tail}[1]{\mathrm{Tail}(#1)}
 \newcommand{\PrefCl}[2][]{\overline{\mathrm{Pref}}_{#1}\left(#2\right)}

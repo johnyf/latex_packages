@@ -10,6 +10,7 @@
 \usepackage{amsmath}
 \usepackage{etoolbox}
 \usepackage{mdframed}
+\usepackage{stmaryrd}  % used to define `\dbr`
 % clean up before loading `tlaplus.sty`
 %
 % defined in:
@@ -54,3 +55,4 @@
 % \def\tla{TLA}
 \def\tlaplus{TLA\textsuperscript{+}}
 \newcommand{\Cl}[2][]{\mathcal{C}_{#1}\big(#2\big)}
+\newcommand{\dbr}[1]{\llbracket #1 \rrbracket}
