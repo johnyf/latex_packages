@@ -13,5 +13,5 @@
 - Caltech beamer theme (courtesy [Scott Livingston](https://github.com/slivingston/misc/tree/master/presentation_templates))
 - Greek hyphenation
 
-Licensed under BSD-2, except for `beamerthemePasadena.sty` that is under GPL,
-and `tlamath.sty`.
+Licensed under BSD-2, except for `beamerthemePasadena.sty` that is under GPL.
+
