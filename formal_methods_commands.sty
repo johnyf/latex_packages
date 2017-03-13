@@ -14,20 +14,8 @@
 		\hspace{2pt}\mathcal{U}_{#1}%
 	\fi%
 }%
-\newcommand{\always}[1][\undefined]{%
-	\ifx#1\undefined%
-		\LTLsquare%
-	\else%
-		\LTLsquare_{#1}%
-	\fi%
-}%
-\newcommand{\eventually}[1][\undefined]{%
-	\ifx#1\undefined%
-		\LTLdiamond
-	\else%
-		\LTLdiamond_{#1}%
-	\fi%
-}%
+\newcommand{\always}{\Box}%
+\newcommand{\eventually}{\Diamond}%
 \newcommand{\nxt}[1][\undefined]{%
 	\ifx#1\undefined%
 		\LTLcircle%
