@@ -14,4 +14,3 @@
 - Greek hyphenation
 
 Licensed under BSD-2, except for `beamerthemePasadena.sty` that is under GPL.
-

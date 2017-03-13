@@ -1,19 +1,19 @@
 \makeatletter
 \@ifpackageloaded{listings}{%
 	% source code formatting (CAUTION: listings != listing package)
-	
+
 	% Default fixed font does not support bold face
 	\DeclareFixedFont{\ttb}{T1}{txtt}{bx}{n}{8} % for bold
 	\DeclareFixedFont{\ttm}{T1}{txtt}{m}{n}{12}  % for normal
-	
+
 	% Custom colors
 	\usepackage{color}
 	\definecolor{deepblue}{rgb}{0,0,0.5}
 	\definecolor{deepred}{rgb}{0.6,0,0}
 	\definecolor{deepgreen}{rgb}{0,0.5,0}
-	
+
 	\newfontfamily{\couriernew}{Courier New}
-	
+
 	\newcommand\cstyle{\lstset{%
 		language=C,% choose the language of the code
 		basicstyle=\footnotesize,% the size of the fonts that are used for the code
@@ -38,7 +38,7 @@
 		commentstyle=\color[rgb]{0.133,0.545,0.133},%
 		stringstyle=\color[rgb]{0.627,0.126,0.941}%
 	}}%
-	
+
 	\newcommand\pythonstyle{\lstset{%
 		language=Python,%
 		basicstyle=\footnotesize\couriernew,%
@@ -60,7 +60,7 @@
 		emphstyle=\ttb\color{deepred},%
 		stringstyle=\color{deepgreen},%
 		frame=tb,%
-		showstringspaces=false% 
+		showstringspaces=false%
 		%
 		tabsize=4,% sets default tabsize to 2 spaces
 		captionpos=b,% sets the caption-position to bottom
@@ -71,7 +71,7 @@
 		frame=shadowbox,%
 		rulesepcolor=\color{blue},%
 	}}%
-	
+
 	\newcommand\promelastyle{\lstset{%
 		language=Promela,%
 		basicstyle=\footnotesize\couriernew,%
@@ -90,7 +90,7 @@
 		stringstyle=\color[rgb]{0.627,0.126,0.941},%
 		stringstyle=\color{deepgreen},%
 		frame=tb,%
-		showstringspaces=false% 
+		showstringspaces=false%
 		%
 		tabsize=4,%
 		captionpos=b,%
@@ -101,11 +101,11 @@
 		frame=shadowbox,%
 		rulesepcolor=\color{blue},%
 	}}%
-	
+
 	\newcommand{\matlabstyle}{
 		%
 	}%
-	
+
 	% Python for external files
 	\newcommand\inputcode[2][\undefined]{%
 		\ifx#1c%
