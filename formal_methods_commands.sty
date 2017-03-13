@@ -4,8 +4,9 @@
 % author's email: jfilippidis@gmail.com
 \NeedsTeXFormat{LaTeX2e}
 \ProvidesPackage{formal_methods_commands}
+\usepackage{bm}
 \usepackage{mathtools}  % `\mathrlap`
-\usepackage{ltlfonts}
+\usepackage{scalerel}  % `\scaleobj`
 
 \newcommand{\until}[1][\undefined]{%
 	\ifx#1\undefined%
@@ -16,21 +17,29 @@
 }%
 \newcommand{\always}{\Box}%
 \newcommand{\eventually}{\Diamond}%
-\newcommand{\nxt}[1][\undefined]{%
-	\ifx#1\undefined%
-		\LTLcircle%
-	\else%
-		\setcounter{ct}{1}%
-		\LTLcircle%
-		\forloop{ct}{1}{\value{ct} < #1}{%
-			\LTLcircle%
-		}%
-	\fi%
-}%
-\def\previous{\LTLcircleminus}
-\def\weakprevious{\LTLcircletilde}
-\def\once{\LTLdiamondminus}
-\def\historically{\LTLsquareminus}
+\newcommand{\nxt}{\bigcirc}%
+\def\previous{%
+    \raisebox{1.25pt}{%
+        $\scaleobj{0.75}{
+            \mathrlap{\bigcirc}\hspace{1.5pt}%
+            \scaleobj{0.9}{-}}$}%
+    \hspace{1.5pt}}
+\def\weakprevious{%
+    \raisebox{1.25pt}{%
+        $\scaleobj{0.75}{
+            \mathrlap{\bigcirc}\hspace{1.5pt}%
+            \scaleobj{0.9}{\sim}}$}%
+    \hspace{1.5pt}}
+\def\historically{%
+        \mathrlap{\Box}\hspace{1.5pt}%
+            \raisebox{2pt}{%
+                \scaleobj{0.5}{\boldsymbol{-}}}%
+    \hspace{1.5pt}}
+\def\once{%
+        \mathrlap{\Diamond}\hspace{1.6pt}%
+            \raisebox{2pt}{%
+                \scaleobj{0.5}{\boldsymbol{-}}}%
+    \hspace{1.5pt}}
 \def\cox{\mathrlap{\bigcirc}\eventually}
 \def\mox{\rotatebox[origin=c]{45}{$\cox$}}
 
