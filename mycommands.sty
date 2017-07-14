@@ -11,6 +11,8 @@
 \usepackage[capitalize]{cleveref}
 \usepackage{color}
 \usepackage{forloop}
+\usepackage{mdframed}
+\usepackage{xcolor}
 \usepackage{xifthen}
 \usepackage{xkeyval}
 \usepackage{url}
@@ -234,7 +236,9 @@
 				\IfFileExists{#2.pdf_tex}{%
 					\input{#2.pdf_tex}%
 				}{%
+                    \begin{mdframed}[backgroundcolor=black!10]%
 					{\color{red} FILE \EscapeUnderscore{#2.pdf_tex} NOT FOUND.}%
+                    \end{mdframed}%
 				}%
 			\else%
 				\immediate\write18{inkscape2tex.py -i #2 -m pdf}%
@@ -506,7 +510,9 @@
 	\IfFileExists{#2.pdf_tex}{%
 		\input{#2.pdf_tex}%
 	}{%
+        \begin{mdframed}[backgroundcolor=black!10]%
 		{\color{red} FILE #2.pdf_tex NOT FOUND.}%
+        \end{mdframed}%
 	}%
 }%
 
@@ -529,7 +535,9 @@
 	\IfFileExists{#2.eps_tex}{%
 		\input{#2.eps_tex}%
 	}{%
+        \begin{mdframed}[backgroundcolor=black!10]%
 		{\color{red} FILE #2.eps_tex NOT FOUND.}%
+        \end{mdframed}%
 	}%
 }%
 
