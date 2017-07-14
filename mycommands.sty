@@ -13,6 +13,7 @@
 \usepackage{forloop}
 \usepackage{xifthen}
 \usepackage{xkeyval}
+\usepackage{url}
 % \usepackage{hyperref}  % causes issues with some TLA+ styles
 %\usepackage{fmtcount}
 
@@ -30,6 +31,7 @@
 \def\figureautorefname{Fig.}% in front of figure's \autoref
 %\newcommand{\subfigureautorefname}{Fig.}% when not defined by hyperref, newcommand is used instead of \def
 \newcommand{\algorithmautorefname}{Algorithm}%
+\DeclareUrlCommand\EscapeUnderscore{\urlstyle{rm}}
 
 % for algseudocode
 \@ifpackageloaded{algpseudocode}{%
@@ -232,7 +234,7 @@
 				\IfFileExists{#2.pdf_tex}{%
 					\input{#2.pdf_tex}%
 				}{%
-					{\color{red} FILE #2.pdf_tex NOT FOUND.}%
+					{\color{red} FILE \EscapeUnderscore{#2.pdf_tex} NOT FOUND.}%
 				}%
 			\else%
 				\immediate\write18{inkscape2tex.py -i #2 -m pdf}%
