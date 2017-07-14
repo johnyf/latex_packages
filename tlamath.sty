@@ -9,9 +9,10 @@
 \usepackage{etoolbox}
 \usepackage{mdframed}
 \usepackage{stmaryrd}  % used to define `\dbr`
-% clean up before loading `tlaplus.sty`
+% Clean up definitions before loading `tlaplus.sty`
+% in order to avoid conflicts.
 %
-% defined in:
+% `\proof` is defined in:
 % `ieeeconf.cls`
 % `amsthm`
 % `beamer`
@@ -21,14 +22,17 @@
 \ifdef{\endproof}{
     \typeout{WARNING: "endproof" already defined, to be deleted}
     \let\endproof\undefined}{}
+% `\qed` is defined in:
 % `beamer`
 \ifdef{\qed}{
     \typeout{WARNING: "qed" already defined, to be deleted}
     \let\qed\undefined}{}
+% `\QED` s defined in:
 % `ieeeconf.cls`
 \ifdef{\QED}{
     \typeout{WARNING: "QED" already defined, to be deleted}
     \let\QED\undefined}{}
+% `\implies` is defined in:
 % `amsthm`
 \ifdef{\implies}{
     \typeout{WARNING: "implies" already defined, to be deleted}
