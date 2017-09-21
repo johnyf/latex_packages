@@ -574,6 +574,23 @@
     \end{developmentremark}%
     \end{mdframed}%
 }%
+
+% Boxed problem statement
+\mdfdefinestyle{mystyle}{%
+linecolor=green!40!black,outerlinewidth=1pt,%
+frametitlerule=true,frametitlefont=\sffamily\bfseries\color{white},%
+frametitlerulewidth=1pt,frametitlerulecolor=green!40!black,%
+frametitlebackgroundcolor=green!40!black,
+backgroundcolor=green!5,
+innertopmargin=\topskip,
+roundcorner=5pt
+}
+\newmdenv[style=mystyle]{exa}
+\newenvironment{emphprob}[1]
+  {\begin{exa}[frametitle=#1]}
+  {\end{exa}}
+
+
 %=================
 % Mathematics
 %=================
