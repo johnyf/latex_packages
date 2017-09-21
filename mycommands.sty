@@ -6,6 +6,7 @@
 % Copyright (BSD-2) 2009-2016 by Ioannis Filippidis
 % author's email: jfilippidis@gmail.com
 \usepackage{adjustbox}
+\usepackage{amsmath}
 \usepackage{amsopn}
 \usepackage{calc}
 \usepackage[capitalize]{cleveref}
@@ -565,6 +566,14 @@
 \def\myparbreak{12pt}% spacing between paragraphs when needed % \vspace{\myparbreak}
 \def\myparbrk{\vspace{12pt}}%
 
+\newtheorem{developmentremark}{Development Remark}
+\newenvironment{devremark}{%
+    \begin{mdframed}[backgroundcolor=black!10,rightline=false,leftline=false]%
+    \begin{developmentremark}%
+}{%
+    \end{developmentremark}%
+    \end{mdframed}%
+}%
 %=================
 % Mathematics
 %=================
