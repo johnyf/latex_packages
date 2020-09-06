@@ -1,7 +1,9 @@
 # LaTeX packages
 
-- `mycommands.sty`: package for interfacing with inkscape, to be used with [this](https://github.com/johnyf/inkscape).
-  This includes both single or multiple figures imported with one command, as well as layered figures for presentations.
+- `svglatex.sty`: package for interfacing with inkscape, to be used with [this](
+    https://github.com/johnyf/svglatex).
+- `mycommands.sty`: Several commands for including multiple graphics, and
+  for formatting mathematics.
 - `tlamath.sty`: a small excerpt from and wrapper of the TLA+ LaTeX styles
 - other custom LaTeX convenience commands, mainly in:
   - `mycommands.sty`
