@@ -66,7 +66,7 @@
     \ifx\mycmd@demo\undefined%
         \setkeys{svg}{#1}{
             \ifKV@svg@tex%
-                \immediate\write18{inkscape2tex.py -i #2 -m latex-pdf}%
+                \immediate\write18{svglatex -i #2 -m latex-pdf}%
                 \ifthenelse{\isempty{\svgwidth}}{%
                     \global\let\svgwidth\undefined%
                 }{%
@@ -80,7 +80,7 @@
                     \end{mdframed}%
                 }%
             \else%
-                \immediate\write18{inkscape2tex.py -i #2 -m pdf}%
+                \immediate\write18{svglatex -i #2 -m pdf}%
                 \ifx#1\undefined%
                     \includegraphics{#2.pdf}%
                 \else%
