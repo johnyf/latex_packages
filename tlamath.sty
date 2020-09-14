@@ -37,6 +37,10 @@
 \ifdef{\implies}{
     \typeout{WARNING: "implies" already defined, to be deleted}
     \let\implies\undefined}{}
+% `\E` is defined in Springer's `svmult.cls`
+\ifdef{\E}{
+    \typeout{WARNING: "\E" already defined, to be deleted}
+    \let\E\undefined}{}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % safe now to load the TLA+ styles
 \usepackage{tlaplus}
